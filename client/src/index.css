@@ -1,0 +1,107 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: sans-serif;
+
+}
+
+/* code {
+  font-family: sans-serif;
+
+}
+
+.icons_style {
+  font-size: 22px;
+  color: #1C82E1
+}
+
+.input_style {
+  border: none;
+  outline: none;
+
+}
+
+.login_page h4 {
+  color: #C2CCD9;
+  font-weight: 300;
+}
+
+.login_page .border_top_red {
+  border: 1px solid #DFE8F1;
+}
+
+.login_page .border_top_red {
+  border-top: 2px solid red;
+  border-radius: 5px;
+}
+
+.submit_button {
+  background-color: #65A6FF;
+  border: none;
+  color: #fff;
+  border-radius: 5px
+}
+
+.right_menu {
+  height: 100%;
+  width: 100%;
+}
+
+.right_menu button {
+  border: none;
+
+}
+
+.login_button1 {
+  background-color: #3B5998;
+  color: #fff
+}
+
+.login_button2 {
+  background-color: #DD4B39;
+  color: #fff
+}
+
+.login_icon1 {
+  background-color: #3B5998;
+  position: relative;
+  color: #fff;
+  z-index: 10;
+  font-size: 20px;
+}
+
+.login_icon1::after {
+  content: " ";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0.2;
+
+}
+
+.login_icon2 {
+  background-color: #DD4B39;
+  position: relative;
+  color: #fff;
+  z-index: 10;
+  font-size: 20px;
+}
+
+.login_icon2::after {
+  content: " ";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0.2;
+
+}
+
+.login_page {
+  height: 100vh;
+} */
