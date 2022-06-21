@@ -7,6 +7,7 @@ import { BiLockOpenAlt } from "react-icons/bi";
 import { AiOutlineGooglePlus } from "react-icons/ai";
 import { TiDeviceLaptop } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
+import './login.css'
 
 
 
@@ -19,26 +20,26 @@ const Login = () => {
 
 
 
-     const handleSubmit = async (e) => {
-       e.preventDefault();
-       await axios.post("http://localhost:8080/auth/login", {
-           email: email,
-           password: password,
-         }).then((response) => {
-           if (response.data.success) {
-             const user = response.data;
-             window.localStorage.setItem("user", JSON.stringify(user));
-             setCookie("token", "Bearer " + user, { path: "/" });
-             sessionStorage.setItem("token", "Bearer " + response.data.token);
-             navigate('./dashboard');
-           } else {
-             setErrorMessage(response.data.message);
-           }
-         });
-     };
+    //  const handleSubmit = async (e) => {
+    //    e.preventDefault();
+    //    await axios.post("http://localhost:8080/auth/login", {
+    //        email: email,
+    //        password: password,
+    //      }).then((response) => {
+    //        if (response.data.success) {
+    //          const user = response.data;
+    //          window.localStorage.setItem("user", JSON.stringify(user));
+    //          setCookie("token", "Bearer " + user, { path: "/" });
+    //          sessionStorage.setItem("token", "Bearer " + response.data.token);
+    //          navigate('./dashboard');
+    //        } else {
+    //          setErrorMessage(response.data.message);
+    //        }
+    //      });
+    //  };
 
   return (
-    <div className="container ">
+    <div className="container">
       <div className="row d-flex justify-content-center align-items-center  login_page">
         <div className="col-7 mx-auto">
           <div className="row">
@@ -48,7 +49,7 @@ const Login = () => {
           </div>
           <div className="row d-flex border_top_red align-content-center justify-content-center  p-4 ">
             <div className="col-6  pb-5 ">
-              <form onSubmit={handleSubmit}>
+              <form>
                 <div className="mb-3">
                   <label htmlFor="exampleInputEmail1" className="form-label">
                     Email address

@@ -125,7 +125,7 @@ return (
   {/* View of pagination */}
   <Pagination postPerpage={postPerpage}  totalPosts={posts.length} paginate={paginate} />
       </center>
-  </div>
+      </div>
      
       )};
 export default User;

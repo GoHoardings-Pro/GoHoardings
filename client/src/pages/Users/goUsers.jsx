@@ -9,6 +9,7 @@ import filterFactory from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import { MultiSelect } from "react-multi-select-component";
+import SideBar from "../../Components/Navbar/Sidebar";
 import Axios from "axios"
 
 
@@ -17,16 +18,16 @@ const GoUser = () => {
   const [posts, setPosts] = useState([]);
 
 
-useEffect(() => {
-  const fetchPost = async() => {
-    const res =  await Axios.get("http://localhost:8080/users/goUsers")
-    setPosts(res.data)
-  };
-  fetchPost();
-}, []);
+  useEffect(() => {
+    const fetchPost = async () => {
+      const res = await Axios.get("http://localhost:8080/users/goUsers")
+      setPosts(res.data)
+    };
+    fetchPost();
+  }, []);
 
-const columns = [
-    { dataField: "id", text: "ID",  },
+  const columns = [
+    { dataField: "id", text: "ID", },
     { dataField: "profile_image", formatter: imageFormatter, text: "Image" },
     { dataField: "firstname", text: "Name", sort: true },
     { dataField: "lastname", text: "Last Name", sort: true },
@@ -51,19 +52,31 @@ const columns = [
 
 
 
-  
-return (
-      <div classname="m-5 p-5">
-      <BootstrapTable 
-       keyField="id"
-       data={posts}
-       columns={columns}
-          selectRow={ {mode: 'checkbox',
-          clickToSelect: true} }
-          pagination={ pagintion } 
-         
-          />
-      </div>
-     
-      )};
+
+  return (
+    <>
+      <div className="containers">
+
+        <div className="container-sidebar">
+          <SideBar />
+        </div>
+        <div className="container-pages">
+          <div classname="m-5 p-5">
+            <BootstrapTable
+              keyField="id"
+              data={posts}
+              columns={columns}
+              selectRow={{
+                mode: 'checkbox',
+                clickToSelect: true
+              }}
+              pagination={pagintion}
+
+            />
+          </div>
+        </div></div>
+    </>
+
+  )
+};
 export default GoUser;
