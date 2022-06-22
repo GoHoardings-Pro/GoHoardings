@@ -10,6 +10,9 @@ import { FaDollarSign, FaShoppingCart } from 'react-icons/fa';
 import { BsBookmark } from 'react-icons/bs';
 import { BiCalendar } from 'react-icons/bi';
 import { MdRefresh } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import {useNavigate } from 'react-router-dom';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
@@ -76,6 +79,19 @@ const pageCards = [{
 
 ]
 const DashBoard = () => {
+    const navigate = useNavigate();
+    const { isAuthenticate } = useSelector( state => state.admin);
+
+    console.log(isAuthenticate);
+
+    useEffect(()=>{
+        console.log(isAuthenticate);
+        if( isAuthenticate === true){
+          navigate('/dashboard')
+        }else{
+          navigate('/login')
+        }
+      },[isAuthenticate])
     return (
         <>
             <div className="containers">

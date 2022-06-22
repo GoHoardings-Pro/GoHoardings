@@ -5,7 +5,7 @@ const router = express.Router()
 const db = require('../conn/conn')
 
 router.post('/login', async (req, res) => {
-  db.changeUser({database:"sql_login"})
+  db.changeUser({database:"users"})
     const password = req.body.password;
     const email = req.body.email;
     db.query("SELECT * FROM users WHERE email = ? ", [email], async (err, result) => {

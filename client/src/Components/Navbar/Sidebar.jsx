@@ -1,4 +1,4 @@
-import { Children, useState } from "react";
+import { useState } from "react";
 import "./Sidebar.css"
 import { NavLink } from "react-router-dom";
 import { AiOutlineHome, AiOutlineUser, AiOutlineAlignRight, AiOutlineSync, AiOutlineLock, AiOutlineFileText } from "react-icons/ai";
@@ -117,17 +117,17 @@ const routes = [
   },
 ];
 
-const navItem = [
-  {
-    navItemIcon:<BsArrowsFullscreen />,
-    navItemHeader:"notification",
-    navItemHeaderValue: '06',
-    navListTitile:"New registration",
-    navListTitileIcon:'',
-    navListTitileValue:"just now"
+// const navItem = [
+//   {
+//     navItemIcon:<BsArrowsFullscreen />,
+//     navItemHeader:"notification",
+//     navItemHeaderValue: '06',
+//     navListTitile:"New registration",
+//     navListTitileIcon:'',
+//     navListTitileValue:"just now"
 
-  }
-]
+//   }
+// ]
 const navGridItem = [
   {
   navGridItemIcon:<AiOutlineFileText/>,
@@ -182,14 +182,13 @@ const navPeronalItem = [
   color:'green'
   },
 ]
-const SideBar = ({ children }) => {
+const SideBar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [ containerStyle, setContainerStyle ] = useState()
+  // const [ containerStyle, setContainerStyle ] = useState()
    const toggle = () => {
     setIsOpen(!isOpen)
     
   };
-  console.log(children);
   // const inputAnimation = {
   //   hidden: {
   //     width: 0,
@@ -385,9 +384,7 @@ const SideBar = ({ children }) => {
           </section>
         </motion.div>
 
-        {/* <main>{children}</main> */}
       </aside>
-            <main>{children}</main>
     </>
   );
 };
