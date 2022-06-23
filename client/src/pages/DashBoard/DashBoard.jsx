@@ -80,9 +80,9 @@ const pageCards = [{
 ]
 const DashBoard = () => {
     const navigate = useNavigate();
-    const { isAuthenticate } = useSelector( state => state.admin);
+    const { isAuthenticate, admin } = useSelector( state => state.admin);
 
-    console.log(isAuthenticate);
+    console.log(isAuthenticate,admin);
 
     useEffect(()=>{
         console.log(isAuthenticate);

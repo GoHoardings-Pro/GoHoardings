@@ -8,17 +8,16 @@ const Rejected = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerpage] = useState(10);
- 
-  const fetchPost = async () => {
-    await Axios.get("http://localhost:8080/odoads_data_manage/rejectaccepted").then(
-      (data) => {
-        setPosts(data.data);
-      }
-    );
-  };
-  fetchPost();
 
-console.log(posts);
+  useEffect(() => {
+    const fetchPost = async () => {
+      const res = await Axios.get("http://localhost:8080/odoads_data_manage/rejectaccepted")
+      setPosts(res.data);
+    };
+    fetchPost();
+  }, [])
+
+  console.log(posts);
   //Get Current Posts (Pagination)
   const indexOfLastPost = currentPage * postPerpage;
   const indexOfFirstPost = indexOfLastPost - postPerpage;
@@ -28,105 +27,106 @@ console.log(posts);
 
 
 
-  const  getpost = (
-  allocate_end_date,
-  allocate_start_date,
-  areadescription,
-  available_date,
-  block_limit,
-  category_id,
-  city,
-  client,
-  clientCode,
-  code,
-  created_date,
-  district,
-  foot_fall,
-  ftf,
-  geolocation,
-  height,
-  heightunit,
-  id,
-  illumination,
-  isBlocked,
-  isBooked,
-  isDelete,
-  is_goh_update,
-  lhs_rhs,
-  location,
-  medianame,
-  modify_date,
-  owner,
-  price,
-  pricetype,
-  saleasbunch,
-  searchingkeywords,
-  slot_duration,
-  slot_per_day,
-  state,
-  status,
-  sub_category_id,
-  syncdescription,
-  syncstatus,
-  thumbnail,
-  totalno,
-  width,
-  widthunit) => {
-  axios.put("http://localhost:8080/odoads_data_manage/accept/",{
-    allocate_end_date:allocate_end_date,
-    allocate_start_date:allocate_start_date,
-    areadescription:areadescription,
-    available_date:available_date,
-    block_limit:block_limit,
-    category_id:category_id,
-    city:city,
-    client:client,
-    clientCode:clientCode,
-    code:code,
-    created:created_date,
-    district:district,
-    foot_fall:foot_fall,
-    ftf:ftf,
-    geolocation:geolocation,
-    height:height,
-    heightunit:heightunit,
-    id:id,
-    illumination:illumination,
-    isBlocked:isBlocked,
-    isBooked:isBooked,
-    isDelete:isDelete,
-    is_goh_update:is_goh_update,
-    lhs_rhs:lhs_rhs,
-    location:location,
-    medianame:medianame,
-    modify_date:modify_date,
-    owner:owner,
-    price:price,
-    pricetype:pricetype,
-    saleasbunch:saleasbunch,
-    searchingkeywords:searchingkeywords,
-    slot_duration:slot_duration,
-    slot_per_day:slot_per_day,
-    state:state,
-    status:status,
-    sub_category_id:sub_category_id,
-    syncstatus:syncstatus,
-    syncdescription:syncdescription,
-    thumbnail:thumbnail,
-    totalno:totalno,
-    width:width,
-    widthunit:widthunit
-  }).then((res) => { 
-    setPosts(
-      posts.map((val) => {
-        return val.id != id;
-      })
-    );
-  })
-}
+  const getpost = (
+    allocate_end_date,
+    allocate_start_date,
+    areadescription,
+    available_date,
+    block_limit,
+    category_id,
+    city,
+    client,
+    clientCode,
+    code,
+    created_date,
+    district,
+    foot_fall,
+    ftf,
+    geolocation,
+    height,
+    heightunit,
+    id,
+    illumination,
+    isBlocked,
+    isBooked,
+    isDelete,
+    is_goh_update,
+    lhs_rhs,
+    location,
+    medianame,
+    modify_date,
+    owner,
+    price,
+    pricetype,
+    saleasbunch,
+    searchingkeywords,
+    slot_duration,
+    slot_per_day,
+    state,
+    status,
+    sub_category_id,
+    syncdescription,
+    syncstatus,
+    thumbnail,
+    totalno,
+    width,
+    widthunit) => {
+    axios.put("http://localhost:8080/odoads_data_manage/accept/", {
+      allocate_end_date: allocate_end_date,
+      allocate_start_date: allocate_start_date,
+      areadescription: areadescription,
+      available_date: available_date,
+      block_limit: block_limit,
+      category_id: category_id,
+      city: city,
+      client: client,
+      clientCode: clientCode,
+      code: code,
+      created: created_date,
+      district: district,
+      foot_fall: foot_fall,
+      ftf: ftf,
+      geolocation: geolocation,
+      height: height,
+      heightunit: heightunit,
+      id: id,
+      illumination: illumination,
+      isBlocked: isBlocked,
+      isBooked: isBooked,
+      isDelete: isDelete,
+      is_goh_update: is_goh_update,
+      lhs_rhs: lhs_rhs,
+      location: location,
+      medianame: medianame,
+      modify_date: modify_date,
+      owner: owner,
+      price: price,
+      pricetype: pricetype,
+      saleasbunch: saleasbunch,
+      searchingkeywords: searchingkeywords,
+      slot_duration: slot_duration,
+      slot_per_day: slot_per_day,
+      state: state,
+      status: status,
+      sub_category_id: sub_category_id,
+      syncstatus: syncstatus,
+      syncdescription: syncdescription,
+      thumbnail: thumbnail,
+      totalno: totalno,
+      width: width,
+      widthunit: widthunit
+    }).then((res) => {
+      setPosts(
+        posts.map((val) => {
+          return val.id != id;
+        })
+      );
+    })
+  }
 
 
   return (
+
     <div>
       <span>
         || Go to page:{" "}
@@ -178,51 +178,51 @@ console.log(posts);
                 <td>{pos.created_date}</td>
                 <td>
                   <button
-                  // onClick={() => getpost(pos.clientCode,pos.id,pos.allocate_end_date,pos.city)}
-                  onClick={() => getpost(
-                    pos.allocate_end_date,
-                    pos.allocate_start_date,
-                    pos.areadescription,
-                    pos.available_date,
-                    pos.block_limit,
-                    pos.category_id,
-                    pos.city,
-                    pos.client,
-                    pos.clientCode,
-                    pos.code,
-                    pos.created_date,
-                    pos.district,
-                    pos.foot_fall,
-                    pos.ftf,
-                    pos.geolocation,
-                    pos.height,
-                    pos.heightunit,
-                    pos.id,
-                    pos.illumination,
-                    pos.isBlocked,
-                    pos.isBooked,
-                    pos.isDelete,
-                    pos.is_goh_update,
-                    pos.lhs_rhs,
-                    pos.location,
-                    pos.medianame,
-                    pos.modify_date,
-                    pos.owner,
-                    pos.price,
-                    pos.pricetype,
-                    pos.saleasbunch,
-                    pos.searchingkeywords,
-                    pos.slot_duration,
-                    pos.slot_per_day,
-                    pos.state,
-                    pos.status,
-                    pos.sub_category_id,
-                    pos.syncdescription,
-                    pos.syncstatus,
-                    pos.thumbnail,
-                    pos.totalno,
-                    pos.width,
-                    pos.widthunit
+                    // onClick={() => getpost(pos.clientCode,pos.id,pos.allocate_end_date,pos.city)}
+                    onClick={() => getpost(
+                      pos.allocate_end_date,
+                      pos.allocate_start_date,
+                      pos.areadescription,
+                      pos.available_date,
+                      pos.block_limit,
+                      pos.category_id,
+                      pos.city,
+                      pos.client,
+                      pos.clientCode,
+                      pos.code,
+                      pos.created_date,
+                      pos.district,
+                      pos.foot_fall,
+                      pos.ftf,
+                      pos.geolocation,
+                      pos.height,
+                      pos.heightunit,
+                      pos.id,
+                      pos.illumination,
+                      pos.isBlocked,
+                      pos.isBooked,
+                      pos.isDelete,
+                      pos.is_goh_update,
+                      pos.lhs_rhs,
+                      pos.location,
+                      pos.medianame,
+                      pos.modify_date,
+                      pos.owner,
+                      pos.price,
+                      pos.pricetype,
+                      pos.saleasbunch,
+                      pos.searchingkeywords,
+                      pos.slot_duration,
+                      pos.slot_per_day,
+                      pos.state,
+                      pos.status,
+                      pos.sub_category_id,
+                      pos.syncdescription,
+                      pos.syncstatus,
+                      pos.thumbnail,
+                      pos.totalno,
+                      pos.width,
+                      pos.widthunit
                     )}
                     className="button is-small is-danger"
                   >

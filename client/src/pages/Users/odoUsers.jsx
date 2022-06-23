@@ -1,131 +1,91 @@
-import React, { useState, useEffect } from 'react'
-import Axios from "axios";
-import Pagination  from '../../helpingFiles/Pagination/Pajination';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import BootstrapTable from 'react-bootstrap-table-next';
+import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit';
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
+import PaginationFactory from "react-bootstrap-table2-paginator";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+import filterFactory from "react-bootstrap-table2-filter";
+import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+import { MultiSelect } from "react-multi-select-component";
+import SideBar from "../../Components/Navbar/Sidebar";
+import Axios from "axios"
 
 
-
-const User = () => {
+const Odousers = () => {
 
   const [posts, setPosts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerpage] = useState(10);
-
-     
-// getting database information
-
-useEffect(() => {
-  const fetchPost = async() => {
-    const res =  await Axios.get("http://localhost:8080/users/odoUsers")
-    setPosts(res.data)
-  };
-  fetchPost();
-}, []);
 
 
-// Redirect to login page
-  
-   // Deleting the user from database
-const deleteUser = async (id) => {
-    // await Axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
-    //   setPosts(
-    //     posts.filter((val) => {
-    //       return val.id != id;
-    //     })
-    //   );
-    // });
-  };
-  
-  
+  useEffect(() => {
+    const fetchPost = async () => {
+      const res = await Axios.get("http://localhost:8080/api/v1/users/odoUsers")
+      setPosts(res.data.data)
+    };
+    fetchPost();
+  }, []);
+  console.log(posts);
 
-  //Get Current Posts (Pagination)
-  const indexOfLastPost = currentPage * postPerpage;
-  const indexOfFirstPost = indexOfLastPost - postPerpage;
-  const currentPosts = posts.slice(indexOfFirstPost ,indexOfLastPost)
-  const paginate = pageNumber => setCurrentPage(pageNumber)
+  const columns = [
+    { dataField: "id", text: "ID", },
+    // { dataField: "profile_image", formatter: editButton, text: "Image" },
+    { dataField: "name", text: "Name", sort: true },
+    { dataField: "contact_firstname", text: "Contact First Name", sort: true },
+    { dataField: "contact_email", text: "Email", sort: true },
+    { dataField: "contact_phone", text: "Phone_Number", sort: true },
+    { dataField: "created", text: "Date", sort: true },
+    { dataField: "synced_media", text: "Sync Media", sort: true },
+    { dataField: "unsynced_media", text: "UnSync Media", sort: true },
+    { dataField: "updates_media", text: "Update Media", sort: true },
+    { dataField: "", formatter: editButton,text: "action"},
+  ];
+
+  function editButton() {
+    return <button>Edit</button> 
+  }
+  function toggleButton() {
+    return <button>Toggle</button> 
+  }
+
+  const pagintion = PaginationFactory({
+    page: 1,
+    sizePerPage: 10,
+    lastPageText: ">>",
+    firstPageText: "<<",
+    nextPageText: ">",
+    prevPageText: ">",
+    showTotal: true,
+    alwaysShowAllBtns: true,
+  });
 
 
 
-// tabel aceding and secding
-  
-  
 
+  return (
+    <>
+      <div className="containers">
 
-return (
-        //Navbar
-      <div>
-        
-	    <span>
-          || Go to page:{" "}
-          <input
-            type="number"
-            defaultValue={paginate + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              paginate(page);
-            }}
-            style={{ width: "50px" }}
-          />
-        </span>{" "}
-		
-		
-		 <select
-          value={postPerpage}
-          onChange={e => {
-            currentPosts(postPerpage(e.target.value))
-          }}
-        >
-          {[10, 20, 30].map(postPerpage => (
-            <option  value={postPerpage}>
-              Show {postPerpage}
-            </option>
-          ))}
-        </select>
-    <center>
-      {/* making User tabel */}
-    <table className="table p-1 m-1">
-    <thead className="thead-dark ">
-        <th scope="col" 
-        >ID</th>
-        <th scope="col"
-        >Company
-        </th>
-        
-        <th scope="col">Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Phone</th>
-        <th scope="col">Created Date</th>
-        <th scope="col">Synced Media</th>
-        <th scope="col">UnSynced Media</th>
-        <th scope="col">Updated Media</th>
-        <th scope="col">Action</th>
-     </thead>
-    <tbody>
-      {/* putting data on table by map function */}
-{ currentPosts.map((posts, index ) => (
-    <tr key={ posts.id }>
-        <td>{ index + 1 }</td>
-        <td>{ posts.name }</td>
-        <td>{ posts.contact_firstname }</td>
-        <td>{ posts.contact_email }</td>
-        <td>{ posts.contact_phone }</td>
-        <td>{ posts.created }</td>
-        <td>{  posts.synced_media }</td>
-        <td>{ posts.unsynced_media }</td>
-        <td>{ posts.updates_media }</td>
-        <td><Link to={`/edit/${posts.id}`} className="button is-small is-info">Edit</Link>
-      <button onClick={ () => deleteUser(posts.id)}className="button is-small is-danger">Delete</button>
-    </td>
-  
-</tr>
- )) }          
-  </tbody>
-  </table>
-  {/* View of pagination */}
-  <Pagination postPerpage={postPerpage}  totalPosts={posts.length} paginate={paginate} />
-      </center>
-      </div>
-     
-      )};
-export default User;
+        <div className="container-sidebar">
+          <SideBar />
+        </div>
+        <div className="container-pages">
+          <div classname="m-5 p-5">
+            <BootstrapTable
+              keyField="id"
+              data={posts}
+              columns={columns}
+              selectRow={{
+                mode: 'checkbox',
+                clickToSelect: true
+              }}
+              pagination={pagintion}
+
+            />
+          </div>
+        </div></div>
+    </>
+
+  )
+};
+export default Odousers;

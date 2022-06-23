@@ -16,6 +16,7 @@ import { BsArrowsFullscreen } from 'react-icons/bs'
 import { MdGridView, MdOutlineTaskAlt } from 'react-icons/md'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { AiOutlineSearch } from 'react-icons/ai'
+import { useSelector } from "react-redux";
 
 
 const routes = [
@@ -29,12 +30,12 @@ const routes = [
     icon: <FiUsers />,
     subRoutes: [
       {
-        path: "/go_user",
+        path: "/dashboard/client",
         name: "Clients",
         icon: <AiOutlineUser />,
       },
       {
-        path: "/odo_users",
+        path: "/dashboard/vanders",
         name: "Venders",
         icon: <RiUserShared2Line />,
       },
@@ -71,12 +72,12 @@ const routes = [
     subRoutes: [
       {
         // RiUserShared2Line
-        path: "/updateSync",
+        path: "/dashboard/acceptc",
         name: "UnSync ",
         icon: <AiOutlineUser />,
       },
       {
-        path: "/rejectedSync",
+        path: "/dashboard/reject",
         name: "Rejected Media",
         icon: <AiOutlineLock />,
       },
@@ -183,6 +184,11 @@ const navPeronalItem = [
   },
 ]
 const SideBar = () => {
+
+  const { isAuthentication, admin } = useSelector(state => state.admin);
+
+  console.log(admin);
+
   const [isOpen, setIsOpen] = useState(true);
   // const [ containerStyle, setContainerStyle ] = useState()
    const toggle = () => {
@@ -291,10 +297,11 @@ const SideBar = () => {
               </li>
               <li className='nav-item'><BsFillPersonFill />
               <div className="dropdown-container personal-view">
-                  <div className="dropdown-header">
-                    <strong>Banty Kumar</strong>
-                    <span>mr.bantikumar9716@gmail.com</span>
-                  </div>
+                 <NavLink to={'/dashboard/user'}>
+                   <div className="dropdown-header">
+                    <strong>{admin && admin.name}</strong>
+                    <span>{admin && admin.email}</span>
+                  </div></NavLink>
                   <div className="dropdownItem">
                   <ul>
                       {

@@ -11,7 +11,8 @@ export const adminReducer = (state = { admin: { } }, action)=>{
             return{
                 ...state,
                 loading: false,
-                isAuthenticate: true
+                isAuthenticate: true,
+                admin: action.payload.user
             }
         case LOGIN_ADMIN_FAIL:
             return{

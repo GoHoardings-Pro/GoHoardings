@@ -10,7 +10,7 @@ router.post('/login', async (req, res) => {
     const email = req.body.email;
     db.query("SELECT * FROM users WHERE email = ? ", [email], async (err, result) => {
         if (err) throw err;
-            if (!result.length ==(password, result[0].password))
+            if (!result.length || await bcrypt.compare(password, result[0].password))
              {
             
               res.json({ success: false, message: "Wrong Email & Password" });
