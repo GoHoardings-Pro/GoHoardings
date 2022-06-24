@@ -12,12 +12,14 @@ app.use(bodyparser.urlencoded({ extended: true}));
 
 
 const adminRoute = require('./routes/adminRoute.js');
-const users = require('./routes/users');
-const syncMedia = require('./routes/syncMedia')
+const usersRoutes = require('./routes/usersRoutes');
+const syncMediaRoutes = require('./routes/syncMediaRoutes')
+const mediaRouter = require('./routes/mediaRoutes')
 
-app.use('/api/v1/admin', adminRoute  )
-app.use('/api/v1/users', users)
-app.use('/api/v1/syncMedia', syncMedia)
+app.use('/api/v1/admin', adminRoute);
+app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/syncMedia', syncMediaRoutes);
+app.use('/api/v1/media', mediaRouter)
 
 
 

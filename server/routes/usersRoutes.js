@@ -1,5 +1,7 @@
 const express = require('express')
-const { goUsers,odoUsers } = require('./../controller/usersController')
+const { goUsers,odoUsers } = require('../controller/usersController')
+
+
 const router = express.Router()
 
 

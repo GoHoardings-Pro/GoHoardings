@@ -47,7 +47,7 @@ const routes = [
     icon: <GoFileMedia />,
     subRoutes:[
       {
-        path: "/media",
+        path: "/dashboard/media",
         name:"media Inventry",
         icon: <RiUserShared2Line />,
       },
@@ -72,7 +72,7 @@ const routes = [
     subRoutes: [
       {
         // RiUserShared2Line
-        path: "/dashboard/acceptc",
+        path: "/dashboard/accept",
         name: "UnSync ",
         icon: <AiOutlineUser />,
       },
