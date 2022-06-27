@@ -7,8 +7,11 @@ const cookieparser = require('cookie-parser')
 app.use(cors());
 app.use(express.json());
 
+app.use( express.json({limit: '14kb'}))
+app.use(bodyparser());
+
+app.use(express.urlencoded({ extended: true}));
 app.use(cookieparser());
-app.use(bodyparser.urlencoded({ extended: true}));
 
 
 const adminRoute = require('./routes/adminRoute.js');

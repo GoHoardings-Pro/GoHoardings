@@ -16,13 +16,22 @@ import DashBoard from "./pages/DashBoard/DashBoard";
 import Login from "./pages/authortication/Login";
 import UserProfile from "./Components/userProfile/UserProfile";
 import Rejected from "./pages/odoads_data_manage/rejecteduser/Rejected";
-
+import { useSelector } from "react-redux";
+import { loadeUser } from "./action/adminAction";
+import store from './store'
 function App() {
+
+  const { isAuthenticate, user} = useSelector(state => state.admin);
+
+  React.useEffect(()=>{
+    store.dispatch(loadeUser())
+    console.log(isAuthenticate);
+  },[])
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route exact path='/' element={<AdminRoute />}></Route>
+          {/* <Route exact path='/' element={<AdminRoute />}></Route> */}
           <Route path="/dashboard" element={<DashBoard/>} ></Route>
           <Route path="/updateSync" element={<Accept />} ></Route>
           <Route path="/dashboard/user" element={<UserProfile/>}></Route>

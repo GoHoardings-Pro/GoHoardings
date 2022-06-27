@@ -15,11 +15,13 @@ import { useEffect } from 'react';
 
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-
-  const dispatch = useDispatch();
+  
   const { loading , isAuthenticate } = useSelector( state => state.admin)
+
+  
   const changeHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value })
   }

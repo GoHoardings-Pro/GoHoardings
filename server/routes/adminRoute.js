@@ -2,9 +2,12 @@ const express = require('express')
 
 const router = express.Router();
 
-const { login } = require('../controller/authController.js')
+const { protect, getMe,me, login } = require('../controller/authController.js')
 
 
-router.route('/login').post(login);
+router.post('/login',login);
+
+
+router.get('/me', protect , getMe , me)
 
 module.exports = router;
