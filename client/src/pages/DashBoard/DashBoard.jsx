@@ -89,7 +89,7 @@ const DashBoard = () => {
         if( isAuthenticate === true){
           navigate('/dashboard')
         }else{
-          navigate('/login')
+        //   navigate('/login')
         }
       },[isAuthenticate])
     return (

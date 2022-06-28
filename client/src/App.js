@@ -21,12 +21,12 @@ import { loadeUser } from "./action/adminAction";
 import store from './store'
 function App() {
 
-  const { isAuthenticate, user} = useSelector(state => state.admin);
+  // const { isAuthenticate, user} = useSelector(state => state.admin);
 
-  React.useEffect(()=>{
-    store.dispatch(loadeUser())
-    console.log(isAuthenticate);
-  },[])
+  // React.useEffect(()=>{
+  //   store.dispatch(loadeUser())
+  //   console.log(isAuthenticate);
+  // },[])
   return (
     <>
       <BrowserRouter>

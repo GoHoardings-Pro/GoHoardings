@@ -12,19 +12,20 @@ export const adminLogin = (user) => async(dispatch)=>{
 
             const { data } = await axios.post(`${url}/api/v1/admin/login`, user, config)
 
-            dispatch({ type: LOGIN_ADMIN_SUCCESS, payload: data.result});
+            dispatch({ type: LOGIN_ADMIN_SUCCESS, payload: data.result.user});
 
         }catch(error){
-            dispatch({type: LOGIN_ADMIN_FAIL, payload: error.response })
+            dispatch({type: LOGIN_ADMIN_FAIL, payload: error.response.data.message })
         }
 } 
 
 export const loadeUser = ()=> async(dispatch)=>{
     try{
         dispatch({ type: LOAD_USER_REQUEST});
-        console.log('work');
+    
         const { data } = await axios.get(`${url}/api/v1/admin/me`);
-        console.log(data);
+
+   
         dispatch({ type: LOAD_USER_SUCCESS, payload:data.result});
     }catch(err){
         dispatch({ type: LOAD_USER_FAIL, payload: err.response.message})

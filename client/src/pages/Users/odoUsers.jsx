@@ -10,55 +10,73 @@ import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import { MultiSelect } from "react-multi-select-component";
 import SideBar from "../../Components/Navbar/Sidebar";
+import Switch from "react-switch"
+import { Pagination } from "antd"
 import Axios from "axios"
 
 
 const Odousers = () => {
 
   const [posts, setPosts] = useState([]);
+  const [total, setTotal] = useState("")
+  const [page, setPage] = useState(1)
+  const [postPerpage, setPostPerPage] = useState(10)
+  const [query, setQuery] = useState("")
 
 
   useEffect(() => {
     const fetchPost = async () => {
       const res = await Axios.get("http://localhost:8080/api/v1/users/odoUsers")
       setPosts(res.data.data)
+      setTotal(res.data.data.length)
+
     };
     fetchPost();
   }, []);
-  console.log(posts);
 
-  const columns = [
-    { dataField: "id", text: "ID", },
-    // { dataField: "profile_image", formatter: editButton, text: "Image" },
-    { dataField: "name", text: "Name", sort: true },
-    { dataField: "contact_firstname", text: "Contact First Name", sort: true },
-    { dataField: "contact_email", text: "Email", sort: true },
-    { dataField: "contact_phone", text: "Phone_Number", sort: true },
-    { dataField: "created", text: "Date", sort: true },
-    { dataField: "synced_media", text: "Sync Media", sort: true },
-    { dataField: "unsynced_media", text: "UnSync Media", sort: true },
-    { dataField: "updates_media", text: "Update Media", sort: true },
-    { dataField: "", formatter: editButton,text: "action"},
-  ];
 
-  function editButton() {
-    return <button>Edit</button> 
-  }
-  function toggleButton() {
-    return <button>Toggle</button> 
+
+  const handel = (id) => {
+    Axios.post("http://localhost:8080/api/v1/users/odoUsers", {
+      id: id
+    }).then((res) => {
+      setPosts(res.data)
+    })
   }
 
-  const pagintion = PaginationFactory({
-    page: 1,
-    sizePerPage: 10,
-    lastPageText: ">>",
-    firstPageText: "<<",
-    nextPageText: ">",
-    prevPageText: ">",
-    showTotal: true,
-    alwaysShowAllBtns: true,
-  });
+  const headers = [
+    { key: "id", label: "ID" },
+    { key: "company", label: "Company" },
+    { key: "name", label: "Name" },
+    { key: "contact_firstname", label: "Contact_Firstname" },
+    { key: "email", label: "Email" },
+    { key: "contact_phone", label: "Phone" },
+    { key: "created", label: "Created Date" },
+    { key: "synced_media", label: "Synced_Media" },
+    { key: "unsynced_media", label: "Unsynced_Media" },
+    { key: "updates_media", label: "Updates_Media" },
+    { key: "switch", label: "Toggle" },
+  ]
 
+  //Get Current Posts (Pagination)
+  const indexOfLastPage = page * postPerpage;
+  const indexOfFirstPage = indexOfLastPage - postPerpage;
+  const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);
+
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPostPerPage(pageSize)
+  }
+
+  const itemRender = (current, type, originalElement) => {
+    if (type === "prev") {
+      return <a>Previous</a>
+    }
+    if (type === "next") {
+      return <a>Next</a>
+    }
+    return originalElement
+  }
 
 
 
@@ -70,20 +88,70 @@ const Odousers = () => {
           <SideBar />
         </div>
         <div className="container-pages">
-          <div classname="m-5 p-5">
-            <BootstrapTable
-              keyField="id"
-              data={posts}
-              columns={columns}
-              selectRow={{
-                mode: 'checkbox',
-                clickToSelect: true
-              }}
-              pagination={pagintion}
+        <div>
+        <center className="m-1 p-1">
+          <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+        </center>
+      </div>
+      <center>
+        {/* making User tabel */}
+        <table className="table table-bordered">
+          <thead className="thead-dark ">
+            <tr>
+              {headers.map((row) => {
+                return <td key={row.key}>{row.label}</td>
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {/* putting data on table by map function */}
+            {currentPosts.filter(obj => {
+              if (query == '') {
+                return obj;
+              } else if (obj.name.toLowerCase().includes(query.toLowerCase()) || obj.created.toLowerCase().includes(query.toLowerCase()) || obj.contact_email.toLowerCase().includes(query.toLowerCase())) {
+                return obj;
+              }
+            }).map((posts, index) => (
+              <tr key={posts.id}>
+                <td>{index + 1}</td>
+                <td>{posts.name}</td>
+                <td>{posts.contact_firstname}</td>
+                <td>{posts.contact_email}</td>
+                <td>{posts.contact_phone}</td>
+                <td>{posts.created}</td>
+                <td>{posts.synced_media}</td>
+                <td>{posts.unsynced_media}</td>
+                <td>{posts.updates_media}</td>
+                <td>
+                  <Switch
+                    onChange={() => handel(posts.id)}
+                    checked={posts.status === 0 ? true : false}
+                  />
 
-            />
-          </div>
-        </div></div>
+                </td>
+
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {/* View of pagination */}
+
+        <div className="section">
+          <Pagination
+            onChange={(value) => setPage(value)}
+            pageSize={postPerpage}
+            total={total}
+            current={page}
+            showSizeChanger
+            showQuickJumper
+            onShowSizeChange={onShowSizeChange}
+            itemRender={itemRender}
+          />
+        </div>
+
+      </center>
+        </div>
+      </div>
     </>
 
   )

@@ -1,48 +1,48 @@
 import { LOGIN_ADMIN_FAIL, LOGIN_ADMIN_REQUIEST, LOGIN_ADMIN_SUCCESS,CLEAR_ERROR, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOGOUT_SUCCESS, LOAD_USER_FAIL, LOGOUT_FAIL } from "../consents/adminConsents";
 
-export const adminReducer = (state = { admin: { } }, action)=>{
+export const adminReducer = (state = { admin: {} }, action)=>{
     switch (action.type) {
         case LOGIN_ADMIN_REQUIEST:
             case LOAD_USER_REQUEST:
             return{
                 loading: true,
-                isAuthenticate: false,
+                isAuthenticated: false,
             }
         case LOGIN_ADMIN_SUCCESS:
         case LOAD_USER_SUCCESS:    
             return{
                 ...state,
                 loading: false,
-                isAuthenticate: true,
-                admin: action.payload.user
+                isAuthenticated: true,
+                admin: action.payload
             }
           
          case LOGOUT_SUCCESS:
             return {
                 loading:false,
                 admin:null,
-                isAuthenticate:false
+                isAuthenticated:false
             }    
         case LOGIN_ADMIN_FAIL:
             return{
                 ...state,
                 loading:false,
-                isAuthenticate: false,
+                isAuthenticated: false,
                 error: action.payload
             }
 
         case LOAD_USER_FAIL:
             return {
-                loading: false,
-               isAuthenticate:false,
+              
+               isAuthenticated:false,
                user:null,
-              error: action.payload.message    
+              error: action.payload
         }
 
         case LOGOUT_FAIL:
             return{
                 loading:false,
-                isAuthenticate: false,
+                isAuthenticated: false,
                 user:null,
                 error: action.payload
             };

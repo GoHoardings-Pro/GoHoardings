@@ -16,12 +16,15 @@ const createSendToken = (user, statusCode, res) => {
    const token = signToken(user.id);
   
    const tokenOption = {
-      expires: new Date(Date.now() + 10 * 24 * 60 *60* 60 * 1000),
-      httpOnly: true
+      expires: new Date(Date.now() + 10000000),
+      httpOnly: false
    }
 
+
    user.password = undefined;
-   
+   res.cookie("jwt", token, {
+      
+   })
    res.status(statusCode).cookie("jwt", token, tokenOption).json({
       status: 'success',
       token,
@@ -53,7 +56,6 @@ exports.login = async (req, res, next) => {
          };
       });
 
-     console.log(req.cookies.jwt);
 
    }
 
@@ -75,7 +77,7 @@ exports.protect = async (req, res, next) => {
       }
       else if (req.cookies.jwt) {
          token = req.cookies.jwt
-         // console.log(token);
+         console.log(token);
       }
       if (!token) {
          return next(new AppError('you are not login! please Login', 401))
