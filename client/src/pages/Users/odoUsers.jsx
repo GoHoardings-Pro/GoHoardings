@@ -88,10 +88,23 @@ const Odousers = () => {
           <SideBar />
         </div>
         <div className="container-pages">
+        <div className="page-title">
+            <h4>VENDERS</h4>
+          </div>
+          <div className="container-page-top">
+            <select class="custom-select" onChange={(e) => setPostPerPage(e.target.value)}>
+              <option selected value="10">10 / pages</option>
+              <option value="20">20 / pages</option>
+              <option value="30">30 / pages</option>
+              <option value="40">40 / pages</option>
+            </select>
+            <div className="search-input">
+              <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+            </div>
+
+          </div>
         <div>
-        <center className="m-1 p-1">
-          <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
-        </center>
+       
       </div>
       <center>
         {/* making User tabel */}
@@ -136,19 +149,25 @@ const Odousers = () => {
         </table>
         {/* View of pagination */}
 
-        <div className="section">
-          <Pagination
-            onChange={(value) => setPage(value)}
-            pageSize={postPerpage}
-            total={total}
-            current={page}
-            showSizeChanger
-            showQuickJumper
-            onShowSizeChange={onShowSizeChange}
-            itemRender={itemRender}
-          />
-        </div>
+        <div className="conatainer-page-bottom">
+          <div className="details">
+            <span> Showing {page*postPerpage-postPerpage+1} to {page*postPerpage} of {total} entries</span>
+          </div>
+          <div className="pagination">
+            <Pagination
+              onChange={(value) => setPage(value)}
+              pageSize={postPerpage}
+              total={total}
+              current={page}
+              showSizeChanger
+              showQuickJumper
+              onShowSizeChange={onShowSizeChange}
+              itemRender={itemRender}
 
+            />
+          </div>
+
+          </div>
       </center>
         </div>
       </div>

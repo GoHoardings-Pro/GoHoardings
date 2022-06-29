@@ -67,7 +67,8 @@ exports.applyCard = async(req,res,next) => {
 //         // Run the query and store the ongoing request in the promises array
       promises.push(new Promise( async (resolve, reject) => {
         // geoloc will remove for now bi=ut we have to add this on future
-        db.query("SELECT id, category_name, code, medianame, location, ftf, keyword, email, status, created FROM "+table_name+" WHERE code = ? ",[element.mediaid],(err, res) => {
+        // db.query("SELECT id, category_name, code, medianame, location, ftf, keyword, email, status, created FROM "+table_name+" WHERE code = ? ",[element.mediaid],(err, res) => {
+        db.query("SELECT * FROM "+table_name+" WHERE code = ? ",[element.mediaid],(err, res) => {
               if (err) {
                   // If there was an error, send it to reject which will be caught in the try/catch  
                reject(err)
