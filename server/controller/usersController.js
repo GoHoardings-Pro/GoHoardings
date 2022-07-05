@@ -18,6 +18,7 @@ exports.goUsers = async(req, res) => {
 
 
 exports.odoUsers = async(req, res) => {
+    db.changeUser({database:'odoads_tblcompanies'})
     db.query("SELECT * FROM tblcompanies ", function (err, result) {
       if (err) throw err;
   

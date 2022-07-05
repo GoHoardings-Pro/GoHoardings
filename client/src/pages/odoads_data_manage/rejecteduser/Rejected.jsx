@@ -152,7 +152,7 @@ const Rejected = () => {
                   {posts.map((pos, index) => (
                     <tr key={pos.id}>
                       <td>{index + 1}</td>
-                      <td>{pos.thumbnail}</td>
+                      <td style={{width:'20%'}}><img src={pos.thumbnail} alt="" style={{width:'30%'}} /></td>
                       <td>{pos.code}</td>
                       <td>{pos.medianame}</td>
                       <td>{pos.syncstatus}</td>

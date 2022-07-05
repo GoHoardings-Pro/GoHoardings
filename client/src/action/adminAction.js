@@ -2,7 +2,7 @@ import { CLEAR_ERRORS, LOAD_USER_FAIL, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOG
 
 import axios from "axios";
 
-const url = 'http://localhost:8080'
+// const url = 'http://localhost:8080'
 
 export const adminLogin = (user) => async(dispatch)=>{
         try{
@@ -10,7 +10,7 @@ export const adminLogin = (user) => async(dispatch)=>{
 
             const config = { headers : { "Content-Type" : "application/json"}};
 
-            const { data } = await axios.post(`${url}/api/v1/admin/login`, user, config)
+            const { data } = await axios.post(`/api/v1/admin/login`, user, config)
 
             dispatch({ type: LOGIN_ADMIN_SUCCESS, payload: data.result.user});
 
@@ -22,9 +22,9 @@ export const adminLogin = (user) => async(dispatch)=>{
 export const loadeUser = ()=> async(dispatch)=>{
     try{
         dispatch({ type: LOAD_USER_REQUEST});
-    
-        const { data } = await axios.get(`${url}/api/v1/admin/me`);
-
+      
+        const { data } = await axios.get(`/api/v1/admin/me`);
+        console.log(data.user);
    
         dispatch({ type: LOAD_USER_SUCCESS, payload:data.result});
     }catch(err){
@@ -35,8 +35,8 @@ export const loadeUser = ()=> async(dispatch)=>{
 
 
 export const logout = () => async(dispatch)=>{
-    try{
-        await axios.get(`${url}/api/v1/users/logout`);
+      try{
+        await axios.get(`/api/v1/admin/logout`);
 
         dispatch({type: LOGOUT_SUCCESS});
     }catch(err){

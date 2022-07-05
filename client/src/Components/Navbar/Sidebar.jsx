@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Sidebar.css"
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineHome, AiOutlineUser, AiOutlineAlignRight, AiOutlineSync, AiOutlineLock, AiOutlineFileText } from "react-icons/ai";
 import { RiUserShared2Line, RiLogoutBoxLine, RiCheckboxMultipleBlankLine } from "react-icons/ri";
 import { BiAnalyse, BiCog } from "react-icons/bi";
@@ -16,8 +16,8 @@ import { BsArrowsFullscreen } from 'react-icons/bs'
 import { MdGridView, MdOutlineTaskAlt } from 'react-icons/md'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from './../../action/adminAction'
 
 const routes = [
   {
@@ -30,12 +30,12 @@ const routes = [
     icon: <FiUsers />,
     subRoutes: [
       {
-        path: "/dashboard/client",
+        path: "/client",
         name: "Clients",
         icon: <AiOutlineUser />,
       },
       {
-        path: "/dashboard/vanders",
+        path: "/vanders",
         name: "Venders",
         icon: <RiUserShared2Line />,
       },
@@ -47,7 +47,7 @@ const routes = [
     icon: <GoFileMedia />,
     subRoutes:[
       {
-        path: "/dashboard/media",
+        path: "/media",
         name:"media Inventry",
         icon: <RiUserShared2Line />,
       },
@@ -72,12 +72,12 @@ const routes = [
     subRoutes: [
       {
         // RiUserShared2Line
-        path: "/dashboard/accept",
+        path: "/accept",
         name: "UnSync ",
         icon: <AiOutlineUser />,
       },
       {
-        path: "/dashboard/reject",
+        path: "/reject",
         name: "Rejected Media",
         icon: <AiOutlineLock />,
       },
@@ -151,50 +151,16 @@ const navGridItem = [
   color:'red'
 },
 ]
-const navPeronalItem = [
-  {
-    navGridItemIcon:<FiRefreshCcw/>,
-  navGridItemtitle:"Activity",
-  color:'green'
-  },
-  {
-    navGridItemIcon:<BsEnvelope/>,
-  navGridItemtitle:"Message",
-  color:'green'
-  },
-  {
-    navGridItemIcon:<FiUser/>,
-  navGridItemtitle:"Profile",
-  color:'green'
-  },
-  {
-    navGridItemIcon:<RiCheckboxMultipleBlankLine/>,
-  navGridItemtitle:"Project",
-  color:'green'
-  },
-  {
-    navGridItemIcon:<FiSettings/>,
-  navGridItemtitle:"settigns",
-  color:'green'
-  },
-  {
-    navGridItemIcon:<FiLock/>,
-  navGridItemtitle:"logOut",
-  color:'green'
-  },
-]
-const SideBar = () => {
 
+
+const SideBar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { isAuthentication, admin } = useSelector(state => state.admin);
 
-  console.log(admin);
 
   const [isOpen, setIsOpen] = useState(true);
-  // const [ containerStyle, setContainerStyle ] = useState()
-   const toggle = () => {
-    setIsOpen(!isOpen)
-    
-  };
+   const toggle = () => {setIsOpen(!isOpen)};
   // const inputAnimation = {
   //   hidden: {
   //     width: 0,
@@ -211,6 +177,7 @@ const SideBar = () => {
   //     },
   //   },
   // };
+  
   const showAnimation = {
     hidden: {
       width: 0,
@@ -227,8 +194,49 @@ const SideBar = () => {
       },
     },
   };
-
-
+  const navPeronalItem = [
+    {
+      navGridItemIcon:<FiRefreshCcw/>,
+    navGridItemtitle:"Activity",
+    color:'green',
+   
+    },
+    {
+      navGridItemIcon:<BsEnvelope/>,
+    navGridItemtitle:"Message",
+    color:'green'
+    },
+    {
+      navGridItemIcon:<FiUser/>,
+    navGridItemtitle:"Profile",
+    color:'green'
+    },
+    {
+      navGridItemIcon:<RiCheckboxMultipleBlankLine/>,
+    navGridItemtitle:"Project",
+    color:'green'
+    },
+    {
+      navGridItemIcon:<FiSettings/>,
+    navGridItemtitle:"settigns",
+    color:'green'
+    },
+    {
+      navGridItemIcon:<FiLock/>,
+    navGridItemtitle:"logOut",
+    color:'green',
+    fun:dashLogout
+    },
+  ]
+  function dashLogout(){
+    navigate('/')
+    dispatch(logout())
+      
+  }
+  const dashUser =()=>{
+    navigate('/userProfile')
+  }
+  
   return (
     <>
       <div className="nav-container">
@@ -297,16 +305,15 @@ const SideBar = () => {
               </li>
               <li className='nav-item'><BsFillPersonFill />
               <div className="dropdown-container personal-view">
-                 <NavLink to={'/dashboard/user'}>
-                   <div className="dropdown-header">
+                   <div className="dropdown-header" onClick={dashUser}>
                     <strong>{admin && admin.name}</strong>
                     <span>{admin && admin.email}</span>
-                  </div></NavLink>
+                  </div>
                   <div className="dropdownItem">
                   <ul>
                       {
                         navPeronalItem.map((list)=>(
-                        <li>
+                         <li onClick={list.fun}>
                          <span style={{ color: list.color}}>{list.navGridItemIcon}</span>
                          <span>{list.navGridItemtitle}</span>
                       </li>))

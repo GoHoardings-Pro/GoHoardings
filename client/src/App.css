@@ -37,7 +37,7 @@
 }
 a{
     text-decoration: none;
-    color: inherit;
+    /* color: inherit; */
 }
 ul{
     list-style: none;

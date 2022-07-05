@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   
-  const { loading , isAuthenticate } = useSelector( state => state.admin)
+  const { loading , isAuthenticated } = useSelector( state => state.admin)
 
   
   const changeHandler = (e) => {
@@ -32,13 +32,13 @@ const Login = () => {
     dispatch(adminLogin(user))
   }
   useEffect(()=>{
-    console.log(isAuthenticate);
-    if( isAuthenticate === true){
+    console.log(isAuthenticated);
+    if( isAuthenticated === true){
       navigate('/dashboard')
     }else{
       navigate('/login')
     }
-  },[isAuthenticate])
+  },[isAuthenticated])
 
 
 

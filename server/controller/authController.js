@@ -67,6 +67,15 @@ exports.login = async (req, res, next) => {
 
 }
 
+exports.logout = async(req,res,next) =>{
+      res.cookie('jwt', 'loggedout', {
+         expiresIn: new Date(Date.now() + 1000),
+         httpOnly:true
+      });
+      res.status(200).json({
+         status:'success'
+      })
+  };
 
 exports.protect = async (req, res, next) => {
       try{
@@ -77,8 +86,7 @@ exports.protect = async (req, res, next) => {
       }
       else if (req.cookies.jwt) {
          token = req.cookies.jwt
-         console.log(token);
-      }
+          }
       if (!token) {
          return next(new AppError('you are not login! please Login', 401))
       }
@@ -123,7 +131,7 @@ exports.me = async(req,res,next) =>{
 
       res.status(200).json({
          message: 'success',
-          result
+          result:result[0]
       })
    })
 
