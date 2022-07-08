@@ -100,7 +100,7 @@ const DashBoard = () => {
                 </div>
                 <div className="container-pages">
                     <div className="page-title">
-                        <h4>DashBoard</h4>
+                        <h2>DashBoard</h2>
                     </div>
                     <div className="page-cards">
                         {pageCards.map((card)=>(

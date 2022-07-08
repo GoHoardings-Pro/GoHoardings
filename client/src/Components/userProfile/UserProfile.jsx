@@ -5,6 +5,7 @@ import axios from 'axios'
 import Modal from "react-modal"
 import {  useParams}  from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import './UserProfile.css'
 
 Modal.setAppElement('#root')
 const UserProfile = () => {
@@ -58,26 +59,42 @@ const UserProfile = () => {
         </div>
         <div>
 {
- <div className="m-5 p-5">
-       {/* <h6>ID : {admin.id}</h6> */}
-       <h6>Email : {admin.email}</h6>
-       <h6>Password : {admin.password}</h6>
-       <h6>Role : {admin.role}</h6>
-       {/* <h6>Token : {admin.token}</h6> */}
+    <div className="m-5 p-5">
+      <div className="userProfileContainer">
+        <div className="userProfilePhoto">
+          <img src="/assests/Profile.png" alt="" />
+        </div>
+        <div className="userProfileDetails">
+         <div>
+          <label htmlFor="email">Email</label>
+          <input type="email" value={admin.email} disabled />
+          </div> 
+         <div>
+          <label htmlFor="password">Password</label>
+          <input type="password" placeholder='******' disabled />
+          </div> 
+         <div>
+          <label htmlFor="email">Role</label>
+          <input type="text" value={admin.role} disabled />
+          </div> 
+         <div>
+          <label htmlFor="email">Contect No.</label>
+          <input type="number" value={admin.phone} disabled />
+          </div> 
+          <br />
        <button onClick={() => setmodalisopen(true)}>Edit Profile</button> 
+      
+        </div>
+      </div>
+       
        <Modal isOpen={modalisopen} 
        shouldCloseOnOverlayClick={false} 
        onRequestClose={() => setmodalisopen(false)}
-        style={{
-          overlay: {
-            background : 'gray'
-          },
-          content: {
-            color: 'green'
-          }
-        }}>
+        >
           <div className="form-group">
-          {/* <form onSubmit={updateuser} return="false"> */}
+       <button  onClick={() => setmodalisopen(false)}>Close</button>
+          <div className="closeIcon"><i className='fa-solid fa-plus'></i></div>
+          <form onSubmit={updateuser} return="false">
                 <div className="field">
                     <input 
                         className="input"
@@ -91,7 +108,7 @@ const UserProfile = () => {
                         className="input"
                         type="text"
                         placeholder="Email"
-                        // value={ admin.email  }
+                        value={ admin.email  }
                         onChange={(e) => setemail(e.target.value) }
                     />
                 </div>
@@ -101,7 +118,7 @@ const UserProfile = () => {
                         className="input"
                         type="text"
                         placeholder="Password"
-                        // value={ admin.password }
+                        value={ admin.password }
                         onChange={(e) => setpassword(e.target.value) }
                     />
                 </div>
@@ -111,13 +128,12 @@ const UserProfile = () => {
                         className="input"
                         type="text"
                         placeholder="Role"
-                        // value={admin.roll}
+                        value={admin.roll}
                         onChange={(e) => seterole(e.target.value) }
                     />
                 </div>
-                {/* <button type="show" onClick={updateuser(admin.id)}>Update</button> */}
-        {/* </form> */}
-       <button  onClick={() => setmodalisopen(false)}>Close</button>
+                <button type="show" onClick={updateuser(admin.id)}>Update</button>
+        </form>
 
              </div>
          

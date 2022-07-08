@@ -132,7 +132,7 @@ const Rejected = () => {
         </div>
         <div className="container-pages">
           <div>
-            <center>
+            {posts && <center>
               {/* making User tabel */}
               <table className="table p-1 m-1">
                 <thead>
@@ -149,7 +149,7 @@ const Rejected = () => {
                 </thead>
                 <tbody>
                   {/* putting data on table by map function */}
-                  {posts.map((pos, index) => (
+                  { posts.map((pos, index) => (
                     <tr key={pos.id}>
                       <td>{index + 1}</td>
                       <td style={{width:'20%'}}><img src={pos.thumbnail} alt="" style={{width:'30%'}} /></td>
@@ -217,7 +217,7 @@ const Rejected = () => {
               </table>
          
           
-            </center>
+            </center>}
           </div>
         </div>
       </div>

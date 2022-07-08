@@ -249,6 +249,7 @@ export default function Api() {
     });
 
     return (
+        <>
         <div>
             <center>
                 <h1>Media Inventory</h1>
@@ -400,5 +401,6 @@ export default function Api() {
                 })()}
             </center>
         </div>
+        </>
     );
 }

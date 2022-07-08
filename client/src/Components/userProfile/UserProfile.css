@@ -1,0 +1,51 @@
+
+.ReactModal__Content {
+    
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    margin: auto;
+    width: 50%;
+    height: 60%;
+}
+.ReactModal__Content>div{
+    padding: 20px;
+}
+.ReactModal__Content label{
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 10px;
+}
+.ReactModal__Content input{
+    padding: 12px 5px 8px 5px;
+    font-size: 18px;
+}
+.userProfileContainer{
+    display: flex;
+    /* align-items: center; */
+}
+
+.userProfilePhoto{
+    width: 30%;
+}
+.userProfilePhoto>img{
+    width: 90%;
+}
+.userProfileDetails{
+    /* margin: 30px 40px; */
+    width: 50%;
+}
+.userProfileDetails>div{
+    width: 100%;
+    padding: 12px;
+}
+.userProfileDetails>div>label{
+    font-size: 28px;
+    
+}
+.userProfileDetails input{
+    padding: 10px;
+}
+.userProfileDetails>button{
+    padding: 10px;
+    margin-left: 20px;
+}

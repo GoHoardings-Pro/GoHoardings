@@ -133,7 +133,7 @@ console.log(gosts);
                 <>
                   <tr key={obj.id}>
                     <td>{index + 1}</td>
-                    <td>{obj.firstname}{obj.lastname}</td>
+                    <td>{obj.firstname}{obj.lastname}</td>  
                     <td>{obj.email}</td>
                     <td>{obj.userid}</td>
                     <td>{obj.phonenumber || '**N/A**'}</td>
@@ -148,9 +148,10 @@ console.log(gosts);
                           <div >
 
                             <div className="dataModal">
-                              <table className="table  p-1 ">
+                              <table className="table  p-2 ">
                                 <thead >
                                   <tr>
+                                    <th scope="col">S.No</th>
                                     <th scope="col">Campaign Name</th>
                                     <th scope="col">Categories</th>
                                     <th scope="col">Status</th>
@@ -161,11 +162,12 @@ console.log(gosts);
                                 <tbody>
                                   {gosts.map(posts.id = (value, index) => (
                                     <tr key={value.id}>
+                                      <td>{index+1}</td>
                                       <td>{value.campaigid}</td>
                                       <td>{value.category_name}</td>
                                       <td>{value.status === 1 ? "Booked" : "Pending"}</td>
                                       <td>{value.created}</td>
-                                      <td>{ <a href="/google.com" target='_blanck'>google{value.meta_title}</a> }</td>
+                                      <td>{ <a href={`https://gohoardings.com/${value.category_name}`} target='_blanck'>{value.meta_title}</a> }</td>
                                     </tr>
                                   ))}
                                 </tbody>

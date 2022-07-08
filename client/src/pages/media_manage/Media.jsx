@@ -1,29 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit';
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
-import PaginationFactory from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-import filterFactory from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import { MultiSelect } from "react-multi-select-component";
-import pptxgen from "pptxgenjs";
 import SideBar from '../../Components/Navbar/Sidebar'
+import './Media.css'
 import axios from "axios";
 
-const XLSX = require('xlsx');
-let pres = new pptxgen();
+
+const options = ["None", "Airport LED", "Airport Media", "Auto Advertising", "Backlit Mupi", "Backlit Totems", "Bench", "Billboard", "Boom Panel", "Bridge Panel",
+    "Bridge Pillar", "Building Facade", "Bus Branding", "Bus LED Screen", "Bus Shelter", "Cantilever", "Cab Branding", "Cinema LED Screen", "Cycle Shelter",
+    "Departmental Store LED Screen", "Digital OOH", "Digital Screen", "Dustbin", "Flag Sign", "Flight Media", "Foot Over Bridge", "Front Facade", "Gantry",
+    "Hoarding", "Hoarding LED", "In Flight Branding", "Led", "Lolipops", "Mall LED", "Mall Media", "Metro Bridge Panel", "Metro LED", "Metro Panel", "Metro Pillars", "Metro Signage",
+    "Metro Station Facade", "Metro Train", "Mini Unipole", "Offices", "Mobile Van", "Neon Billboard", "Piller Wrap", "Pole Kiosks", "Police Booth", "Public Utility", "Railway Station LED", "Side Panel", "Signages",
+    "Smart Boards", "Smart Bus Shelter", "Standee Unit", "Subway Panel", "Traditional OOH Media", "Traffic Booth", "Traffic Junction", "Traffic media", "Train LED Screen", "Train Wrap", "Transit Media", "Tripod", "Unipole", "Unipole LED",
+    "Vending Kiosk", "Wall Wrap", "Water ATM"]
+
+
 
 
 const Media = () => {
-    const { ExportCSVButton } = CSVExport;
 
     const [code, setCode] = useState("");
     const [city, setCity] = useState("");
     const [location, setLocation] = useState("");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState([]);
     const [subcategory, setSubcategory] = useState("");
     const [illumination, setIllumination] = useState("");
     const [company, setCompany] = useState("");
@@ -33,11 +36,17 @@ const Media = () => {
     const [cityname, setcityname] = useState([])
     const [compname, setcompname] = useState([])
     const [state, setState] = useState(false);
+    const [formData, setFormData] = useState({});
 
-    const ShowDetails = async() => {
+
+
+
+    const changeHandler = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const ShowDetails = async () => {
         const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 code: code,
                 city: city,
@@ -48,36 +57,46 @@ const Media = () => {
                 company: company,
             }),
         };
-        const { data } = await axios.post('http://localhost:8080/api/v1/media/inventory', requestOptions)
+        const { data } = await axios.post('/api/v1/media/inventory', requestOptions)
 
         fetchUsers(data)
-        console.log(data);
-        // fetch("http://localhost:8080/api/v1/media/inventory", requestOptions)
-        //     .then((res) => res.json())
-        //     .then((res) => {
+        // console.log(data);
 
-        //         fetchUsers(res);
-        //     });
     };
 
-    const Showcity = async() => {
-        const { data } = await axios.get(`http://localhost:8080/api/v1/media/city`) 
-            setCity(data)
+    const Showcity = async () => {
+        const { data } = await axios.get(`/api/v1/media/city`)
+        setgetcity(data)
     };
 
     let City = [];
+    let Cities = []
     getCity.forEach((obj) => {
         City.push({ "label": obj.name, "value": obj.name })
+        Cities.push(obj.name)
     });
-    const ShowCompany = async() => {
-        const { data } = await axios.get(`http://localhost:8080/api/v1/media/company`) 
-        setCompany(data)
+
+    const ShowCompany = async () => {
+        const { data } = await axios.get(`/api/v1/media/company`)
+        setcomp(data)
+
     };
 
     let Comp = [];
     getcomp.forEach((value) => {
-        Comp.push({ "label": value.name, "value": value.name })
+        // Comp.push({ "label": value.name, "value": value.name })
+        Comp.push(value.name)
     });
+
+    // let MediaOption=[
+    //     {label: "traditional-ooh-media", value: "traditional-ooh-media"},{
+    //     label: "digital-media", value: "digital-media"},{
+    //     label: "transit-media", value: "transit-media"},{
+    //     label: "mall-media", value: "mall-media"},{
+    //     label: "airport-media", value: "airport-media"},{
+    //     label: "inflight_media", value: "inflight_media"},{
+    //     label: "office-media", value: "office-media"}
+    // ]
 
     useEffect(() => {
         ShowDetails();
@@ -97,148 +116,113 @@ const Media = () => {
         }
     }, [code]);
 
-    console.log(getCity);
+
+    const mediaRef = useRef('');
+    const mediaSubRef = useRef('');
+    const dropEl = document.querySelector('.dropEl')
+    const dropEl1 = document.querySelector('.dropEl1')
+
+    const formHandler = (e, field) => {
+        const userInput = e.target.value.toLowerCase()
+        console.log(userInput);
+        if (userInput.length === 0) {
+            dropEl.style.height = 0
+            return dropEl.innerHTML = dropEl1.innerHTML = ''
+        }
+        let filteredWords
+        if (field === 'media') {
+            filteredWords = Cities.filter(word => word.toLowerCase().includes(userInput)).sort().splice(0, 5)
+
+        } else if (field === 'mediaSub') {
+            filteredWords = Comp.filter(word => word.toLowerCase().includes(userInput)).sort().splice(0, 5)
+        }
+
+        dropEl.innerHTML = dropEl1.innerHTML = ''
+        filteredWords.forEach(item => {
+            const listEl = document.createElement('li')
+            listEl.textContent = item
+
+            if (item === userInput) {
+                listEl.classList.add('match')
+            }
+            if (field === 'media') {
+                dropEl.appendChild(listEl)
+
+            } else if (field === 'mediaSub') {
+                dropEl1.appendChild(listEl)
+            }
+        })
+
+        // if(dropEl.children[0] === undefined) {
+        //     return dropEl.style.height = 0
+        // }
+
+        let totalChildrenHeight
+        if (field === 'media') {
+            totalChildrenHeight = dropEl.children[0].offsetHeight * filteredWords.length
+            dropEl.style.height = totalChildrenHeight + 'px'
+        } else if (field === 'mediaSub') {
+            totalChildrenHeight = dropEl1.children[0].offsetHeight * filteredWords.length
+            dropEl1.style.height = totalChildrenHeight + 'px'
+        }
+
+    }
+
+
 
     return (
         <>
             <div className="containers">
-
                 <div className="container-sidebar">
                     <SideBar />
                 </div>
                 <div className="container-pages">
                     <div className="page-title">
-                        <h4>Media Inventory</h4>
+                        <h2>Media Inventory</h2>
                     </div>
-                    <form style={{ width: '90%', margin: 'auto' }}>
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Media Code</label>
-                            <input type="text" onChange={e => setCode(e.target.value)} />
-                            {/* <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/> */}
+                    <form className="media-form">
+                        <div className="form1">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Media Code</label>
+                                <input type="text" id="search" placeholder="media code .." onChange={e => setCode(e.target.value)} />
+                            </div>
+                            <div className="form-group">
+                                <label>Media Owner Company Name:</label>
+                                <input type="text" id="search" placeholder="media code .."  onChange={(e) => { setCompany(e.target.value); }} />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">City</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
+
+                        <div className="form2">
+                            <div className="form-group">
+                                <label>Media Category:</label>
+                                <input type="text" id='search' ref={mediaRef} placeholder="Media Category ...." onChange={(e) => formHandler(e, 'media')} />
+                                <ul className="dropEl" ref={dropEl}></ul>
+                            </div>
+                            <div className="form-group">
+                                <label>Media Subcategory:</label>
+                                <input type="text" name="media-subcategory" ref={mediaSubRef} id="search" placeholder="Media SubCategory ..." onChange={(e) => formHandler(e, 'mediaSub')} />
+                                {/* <ul className="dropEl1" ref={dropEl}></ul> */}
+
+                            </div>
+                            <div className="form-group">
+                                <label>City:</label>
+                                <input type="text" id='search' ref={mediaRef} placeholder="Media Category ...." onChange={(e) => formHandler(e, 'media')} />
+                                <ul className="dropEl" ref={dropEl}></ul>
+                            </div>
+                            <div className="form-group">
+                                <label>Location:</label>
+                                <input type="text" className="all" onChange={e => setLocation(e.target.value)} />
+                            </div>
+
+                            <div className="form-group">
+                                <label>Illimination Type:</label>
+
+                            </div>
                         </div>
-                        <center>
-                          
-                            <label>City:</label>
-                            <MultiSelect options={City} value={cityname} onChange={setcityname} labelledBy="Select" />
-                            <br />
-
-                            <label>Location:</label>
-                            <input type="text" className="all" onChange={e => setLocation(e.target.value)} />
-                            <br />
-
-                            <label>Media Category:</label>
-                            <select onChange={e => setCategory(e.target.value)}>
-                                <option value="None" >None</option>
-                                <option value="traditional-ooh-media" >traditional-ooh-media</option>
-                                <option value="digital-media" >digital-media</option>
-                                <option value="transit-media" >transit-media</option>
-                                <option value="mall-media" >mall-media</option>
-                                <option value="airport-media" >airport-media</option>
-                                <option value="inflight_media" >inflight_media</option>
-                                <option value="office-media" >office-media</option>
-
-                            </select>
-                            <br />
-
-                            <label>Media Subcategory:</label>
-                            <MultiSelect options={Comp} value={compname} onChange={setcompname} labelledBy="Select" />
-                            <br />
-
-
-                            <label>Illimination Type:</label>
-                            <select onChange={e => setIllumination(e.target.value)}>
-                                <option>None</option>
-                                <option>Airport LED</option>
-                                <option>Airport Media</option>
-                                <option>Auto Advertising</option>
-                                <option>Backlit Mupi</option>
-                                <option>Backlit Totems</option>
-                                <option>Bench</option>
-                                <option>Billboard</option>
-                                <option>Boom Panel</option>
-                                <option>Bridge Panel</option>
-                                <option>Bridge Pillar</option>
-                                <option>Building Facade</option>
-                                <option>Bus Branding</option>
-                                <option>Bus LED Screen</option>
-                                <option>Bus Shelter</option>
-                                <option>Cantilever</option>
-                                <option>Cab Branding</option>
-                                <option>Cinema LED Screen</option>
-                                <option>Cycle Shelter</option>
-                                <option>Departmental Store LED Screen</option>
-                                <option>Digital OOH</option>
-                                <option>Digital Screen</option>
-                                <option>Dustbin</option>
-                                <option>Flag Sign</option>
-                                <option>Flight Media</option>
-                                <option>Foot Over Bridge</option>
-                                <option>Front Facade</option>
-                                <option>Gantry</option>
-                                <option>Hoarding</option>
-                                <option>Hoarding LED</option>
-                                <option>In Flight Branding</option>
-                                <option>Led</option>
-                                <option>Lolipops</option>
-                                <option>Mall LED</option>
-                                <option>Mall Media</option>
-                                <option>Metro Bridge Panel</option>
-                                <option>Metro LED</option>
-                                <option>Metro Panel</option>
-                                <option>Metro Pillars</option>
-                                <option>Metro Signage</option>
-                                <option>Metro Station Facade</option>
-                                <option>Metro Train</option>
-                                <option>Mini Unipole</option>
-                                <option>Offices</option>
-                                <option>Mobile Van</option>
-                                <option>Neon Billboard</option>
-                                <option>Piller Wrap</option>
-                                <option>Pole Kiosks</option>
-                                <option>Police Booth</option>
-                                <option>Public Utility</option>
-                                <option>Railway Station LED</option>
-                                <option>Side Panel</option>
-                                <option>Signages</option>
-                                <option>Smart Boards</option>
-                                <option>Smart Bus Shelter</option>
-                                <option>Standee Unit</option>
-                                <option>Subway Panel</option>
-                                <option>Traditional OOH Media</option>
-                                <option>Traffic Booth</option>
-                                <option>Traffic Junction</option>
-                                <option>Traffic media</option>
-                                <option>Train LED Screen</option>
-                                <option>Train Wrap</option>
-                                <option>Transit Media</option>
-                                <option>Tripod</option>
-                                <option>Unipole</option>
-                                <option>Unipole LED</option>
-                                <option>Vending Kiosk</option>
-                                <option>Wall Wrap</option>
-                                <option>Water ATM</option>
-                            </select>
-                            <br />
-
-                            <label>Media Owner Company Name:</label>
-                            <input type="text" className="all" id="company" onChange={(e) => { setCompany(e.target.value); }} />
-                            <br />
-                            <button type="submit" class="btn btn-primary">Sign in</button>
-
-                        </center>
-
                     </form>
-                </div></div>
+                    <button type="submit" class="btn btn-primary ml-3 ">Search</button>
+                </div>
+            </div>
         </>
     )
 }

@@ -109,11 +109,11 @@
 
 .noDataModal{
     position: absolute;
-    left: 50%;
+    right: 4%;
     border: 1px solid tomato;
-    /* margin-top: -50px; */
+    margin-top: -53px;
     background: tomato;
     color:  white;
-    padding: 12px;
+    padding: 5px;
     border-radius: 5px;
 }

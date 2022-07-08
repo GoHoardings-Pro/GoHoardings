@@ -17,11 +17,10 @@ const Accept = () => {
 
 
         const updateStatus = async(id,e) => {
-            console.log(id);
-            e.preventDefault();
-            const { data } = await axios.put("http://localhost:8080/api/v1/syncMedia/accepts", {
-                    id: id,
-                })
+            //      e.preventDefault();
+            // const { data } = await axios.put("http://localhost:8080/api/v1/syncMedia/accepts", {
+            //         id: id,
+            //     })
         }
 
 
@@ -130,6 +129,7 @@ const Accept = () => {
     // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
+      <>         {posts &&  
         <div>
             <div className="containers">
 
@@ -137,8 +137,7 @@ const Accept = () => {
                     <SideBar />
                 </div>
                 <div className="container-pages">
-               
-                <center>
+       <center>
                     {/* making User tabel */}
                     <table className="table p-1 m-1">
                         <thead>
@@ -225,10 +224,14 @@ const Accept = () => {
                  
                     {/* View of pagination */}
                 </center>
-                  
+                
+              
                 </div>
             </div>
         </div>
+      }
+      </>
+
 
     );
 };

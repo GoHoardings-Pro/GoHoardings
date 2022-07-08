@@ -26,40 +26,75 @@ const routes = [
     icon: <AiOutlineHome />,
   },
   {
-    name: "Users",
-    icon: <FiUsers />,
-    subRoutes: [
-      {
-        path: "/client",
-        name: "Clients",
-        icon: <AiOutlineUser />,
-      },
-      {
-        path: "/vanders",
-        name: "Venders",
-        icon: <RiUserShared2Line />,
-      },
-    ],
-  },
-  {
     
-    name: "Media Managment",
-    icon: <GoFileMedia />,
-    subRoutes:[
-      {
+    // name: "Media Managment",
+    // icon: <GoFileMedia />,
+    // subRoutes:[
+    //   {
         path: "/media",
         name:"media Inventry",
         icon: <RiUserShared2Line />,
-      },
+    //   },
      
-    ]
+    // ]
   },
   {
-    path: "/cart",
-    name: "Cart",
-    icon: <BsCartCheck />,
-
+    
+    // name: "Vender Managment",
+    // icon: <GoFileMedia />,
+    // subRoutes:[
+      // {
+        path: "/vanders",
+        name: "Venders",
+        icon: <RiUserShared2Line />,
+      // },
+     
+    // ]
   },
+  {
+    
+    // name: "User Managment",
+    // icon: <GoFileMedia />,
+    // subRoutes:[
+    //   {
+        path: "/client",
+        name: "Clients",
+        icon: <AiOutlineUser />,
+    //   },
+     
+    // ]
+  },
+  {
+    
+    // name: "Staff Managment",
+    // icon: <GoFileMedia />,
+    // subRoutes:[
+    //   {
+        path: "/media",
+        name:"staff",
+        icon: <RiUserShared2Line />,
+    //   },
+     
+    // ]
+  },
+  // {
+  //   name: "Users",
+  //   icon: <FiUsers />,
+  //   subRoutes: [
+  //     {
+  //       path: "/client",
+  //       name: "Clients",
+  //       icon: <AiOutlineUser />,
+  //     },
+  //     {
+  //       path: "/vanders",
+  //       name: "Venders",
+  //       icon: <RiUserShared2Line />,
+  //     },
+  //   ],
+  // },
+  
+ 
   {
     path: "/analytics",
     name: "Analytics",
@@ -67,7 +102,7 @@ const routes = [
   },
   {
     path: "/odoads_data_manage",
-    name: "Sync & Unsync",
+    name: "Unsynced Media",
     icon: <AiOutlineSync />,
     subRoutes: [
       {
@@ -83,11 +118,11 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/order",
-    name: "Order",
-    icon: <BsCartCheck />,
-  },
+  // {
+  //   path: "/order",
+  //   name: "Order",
+  //   icon: <BsCartCheck />,
+  // },
   {
     path: "/settings",
     name: "Settings",
@@ -95,7 +130,7 @@ const routes = [
     exact: true,
     subRoutes: [
       {
-        path: "/settings/profile",
+        path: "/userProfile",
         name: "Profile ",
         icon: <AiOutlineUser />,
       },
@@ -111,11 +146,7 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/logout",
-    name: "Logout",
-    icon: <RiLogoutBoxLine />,
-  },
+  
 ];
 
 // const navItem = [
@@ -195,12 +226,12 @@ const SideBar = () => {
     },
   };
   const navPeronalItem = [
-    {
-      navGridItemIcon:<FiRefreshCcw/>,
-    navGridItemtitle:"Activity",
-    color:'green',
+    // {
+    //   navGridItemIcon:<FiRefreshCcw/>,
+    // navGridItemtitle:"Activity",
+    // color:'green',
    
-    },
+    // },
     {
       navGridItemIcon:<BsEnvelope/>,
     navGridItemtitle:"Message",
@@ -209,18 +240,19 @@ const SideBar = () => {
     {
       navGridItemIcon:<FiUser/>,
     navGridItemtitle:"Profile",
-    color:'green'
+    color:'green',
+    fun:profile
     },
     {
       navGridItemIcon:<RiCheckboxMultipleBlankLine/>,
     navGridItemtitle:"Project",
     color:'green'
     },
-    {
-      navGridItemIcon:<FiSettings/>,
-    navGridItemtitle:"settigns",
-    color:'green'
-    },
+    // {
+    //   navGridItemIcon:<FiSettings/>,
+    // navGridItemtitle:"settigns",
+    // color:'green'
+    // },
     {
       navGridItemIcon:<FiLock/>,
     navGridItemtitle:"logOut",
@@ -232,6 +264,9 @@ const SideBar = () => {
     navigate('/')
     dispatch(logout())
       
+  }
+ function profile(){
+    navigate('/userProfile')
   }
   const dashUser =()=>{
     navigate('/userProfile')
@@ -254,7 +289,7 @@ const SideBar = () => {
                 
               </li>
               <li className='nav-item'><BsBell />
-              <div className="dropdown-container">
+              <div className="nav-dropdown-container">
                   <div className="dropdown-header">
                     <strong>Notification</strong>
                     <span>06</span>
@@ -285,8 +320,8 @@ const SideBar = () => {
                   </div>
                 </div>
               </li>
-              <li className='nav-item'><MdGridView />
-              <div className="dropdown-container grid-view">
+              {/* <li className='nav-item'><MdGridView />
+              <div className="nav-dropdown-container grid-view">
                   <div className="dropdown-header">
                     <strong>Quick Links</strong>
                   </div>
@@ -302,9 +337,9 @@ const SideBar = () => {
                     </ul>
                   </div>
                 </div>
-              </li>
+              </li> */}
               <li className='nav-item'><BsFillPersonFill />
-              <div className="dropdown-container personal-view">
+              <div className="nav-dropdown-container personal-view">
                    <div className="dropdown-header" onClick={dashUser}>
                     <strong>{admin && admin.name}</strong>
                     <span>{admin && admin.email}</span>

@@ -48,7 +48,6 @@ const Odousers = () => {
     { key: "id", label: "ID" },
     { key: "company", label: "Company" },
     { key: "name", label: "Name" },
-    { key: "contact_firstname", label: "Contact_Firstname" },
     { key: "email", label: "Email" },
     { key: "contact_phone", label: "Phone" },
     { key: "created", label: "Created Date" },
@@ -89,7 +88,7 @@ const Odousers = () => {
         </div>
         <div className="container-pages">
         <div className="page-title">
-            <h4>VENDERS</h4>
+            <h2>VENDERS</h2>
           </div>
           <div className="container-page-top">
             <select class="custom-select" onChange={(e) => setPostPerPage(e.target.value)}>
