@@ -92,8 +92,7 @@ const UserProfile = () => {
        onRequestClose={() => setmodalisopen(false)}
         >
           <div className="form-group">
-       <button  onClick={() => setmodalisopen(false)}>Close</button>
-          <div className="closeIcon"><i className='fa-solid fa-plus'></i></div>
+          {/* <div className="closeIcon" onClick={() => setmodalisopen(false)}><i className='fa-solid fa-xmark'></i></div> */}
           <form onSubmit={updateuser} return="false">
                 <div className="field">
                     <input 

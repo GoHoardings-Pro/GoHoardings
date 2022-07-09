@@ -35,6 +35,7 @@ const createSendToken = (user, statusCode, res) => {
 }
 
 exports.login = async (req, res, next) => {
+   console.log(req.body);
    try {
       const { email, password } = req.body;
 

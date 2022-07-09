@@ -28,12 +28,12 @@ router.post('/login', async (req, res) => {
 });
 
 
-router.put("/update", async (req, res) => {
+router.post("/update", async (req, res) => {
   db.changeUser({database:"sql_login"})
   const {id, email, password:Npassword, role} = req.body;
   const password = await bcrypt.hash(Npassword,8)
   db.query(
-    "UPDATE users SET  email = ?, password = ?, role = ? WHERE id = ?",
+    "UPDATE tbl_staff SET  email = ?, password = ?, role = ? WHERE id = ?",
     [email, password, role, id],
     (err, result) => {
       if (err) {
