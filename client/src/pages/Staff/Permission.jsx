@@ -71,23 +71,14 @@ const Permission = () => {
         }).then(data)
     }
 
-    useEffect(() => {
-        getRoles(); //List of all users
-        // handleClick();
-        const fatchdata = async () => {
-            // const { data } = await axios.post(`/api/v1/permission/getPermissions`, {
+    useEffect(async() => {
+        getRoles();
+        
         const { data } = await axios.get(`/api/v1/permission/makePermission`)
-
-            //     role: "Admin",
-            // });
-            setPermission(data);
-        }
-        fatchdata();
+        setPermission(data);
+      
     }, []);
 
-    function refreshPage() {
-        window.location.reload(false);
-      }
 
  const existRef = useRef(null);
  const newRef = useRef(null);
@@ -149,7 +140,7 @@ const Permission = () => {
                             changeFunc(e);
                             getUsers(e);
                         }}>
-                            <option>selected</option>
+                            <option>select</option>
                             {roleList.length > 0 && roleList.map((obj, i) => (
                                 <option value={obj.role}>{obj.role}</option>
                             ))}
@@ -157,7 +148,8 @@ const Permission = () => {
                     </div>
                     <div className="newRole userProfileHidden" ref={newRoleRef}>
                     <form onSubmit={addrole}>
-                        <input className="input" type="text" name="text" placeholder="Create A NEW ROLE" onChange={(e) => setNewRole(e.target.value)} />
+                        <label htmlFor="">Write Role Name :</label>
+                        <input className="input" type="text" name="text" placeholder="Create A NEW ROLE" onChange={(e) => setNewRole(e.target.value)} style={{width:'30%', border:'1px solid rgba(0,0,0,0.1)',padding:'10px'}}/>
                         {/* <input type="submit" text="sumbit" /> */}
                     </form>
                     </div>
@@ -191,10 +183,10 @@ const Permission = () => {
                                         <td><input type="checkbox" value="can_delete" id={item.permission_id} checked={item.can_delete == 1 ? true : false} onChange={handleClick} /></td>
                                     </tr>
                                 ))}
-                                <input type="submit" />
+                                <input type="submit" style={{padding:'10px', margin:'30px 0 0 0'}} />
                             </tbody>
                         </table>
-                        <div>
+                        {/* <div>
 
                             {user.map((obj, i) => (
                                 <>
@@ -208,7 +200,7 @@ const Permission = () => {
                                 </>
                             ))}
 
-                        </div>
+                        </div> */}
                     </form>
                 </div>
 

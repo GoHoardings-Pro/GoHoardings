@@ -109,7 +109,8 @@
 
 .noDataModal{
     position: absolute;
-    right: 4%;
+    right: 0;
+    align-items: center;
     border: 1px solid tomato;
     margin-top: -53px;
     background: tomato;
