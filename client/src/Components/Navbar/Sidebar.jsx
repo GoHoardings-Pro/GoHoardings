@@ -32,7 +32,7 @@ const routes = [
     // subRoutes:[
     //   {
         path: "/media",
-        name:"media Inventry",
+        name:"Media Inventry",
         icon: <RiUserShared2Line />,
     //   },
      
@@ -66,16 +66,21 @@ const routes = [
   },
   {
     
-    // name: "Staff Managment",
-    // icon: <GoFileMedia />,
-    // subRoutes:[
-    //   {
-        path: "/media",
-        name:"staff",
+    name: "Staff Managment",
+    icon: <GoFileMedia />,
+    subRoutes:[
+      {
+        path: "/permission",
+        name:"Permission ",
         icon: <RiUserShared2Line />,
-    //   },
+      },
+      {
+        path: "/staffPermission",
+        name:"Staff Permission",
+        icon: <RiUserShared2Line />,
+      },
      
-    // ]
+    ]
   },
   // {
   //   name: "Users",

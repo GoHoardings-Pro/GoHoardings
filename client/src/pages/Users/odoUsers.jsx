@@ -27,8 +27,8 @@ const Odousers = () => {
   useEffect(() => {
     const fetchPost = async () => {
       const res = await Axios.get("http://localhost:8080/api/v1/users/odoUsers")
-      setPosts(res.data.data)
-      setTotal(res.data.data.length)
+      setPosts(res.data)
+      setTotal(res.data.length)
 
     };
     fetchPost();
@@ -46,18 +46,18 @@ const Odousers = () => {
 
   const headers = [
     { key: "id", label: "ID" },
-    { key: "company", label: "Company" },
     { key: "name", label: "Name" },
+    { key: "code", label: "Code" },
     { key: "email", label: "Email" },
     { key: "contact_phone", label: "Phone" },
-    { key: "created", label: "Created Date" },
+    { key: "created", label: "Date" },
     { key: "synced_media", label: "Synced_Media" },
     { key: "unsynced_media", label: "Unsynced_Media" },
     { key: "updates_media", label: "Updates_Media" },
     { key: "switch", label: "Toggle" },
   ]
 
-  //Get Current Posts (Pagination)
+  // Get Current Posts (Pagination)
   const indexOfLastPage = page * postPerpage;
   const indexOfFirstPage = indexOfLastPage - postPerpage;
   const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);
@@ -78,7 +78,7 @@ const Odousers = () => {
   }
 
 
-
+console.log(posts);
   return (
     <>
       <div className="containers">
@@ -87,7 +87,7 @@ const Odousers = () => {
           <SideBar />
         </div>
         <div className="container-pages">
-        <div className="page-title">
+          <div className="page-title">
             <h2>VENDERS</h2>
           </div>
           <div className="container-page-top">
@@ -102,72 +102,72 @@ const Odousers = () => {
             </div>
 
           </div>
-        <div>
-       
-      </div>
-      <center>
-        {/* making User tabel */}
-        <table className="table table-bordered">
-          <thead className="thead-dark ">
-            <tr>
-              {headers.map((row) => {
-                return <td key={row.key}>{row.label}</td>
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {/* putting data on table by map function */}
-            {currentPosts.filter(obj => {
-              if (query == '') {
-                return obj;
-              } else if (obj.name.toLowerCase().includes(query.toLowerCase()) || obj.created.toLowerCase().includes(query.toLowerCase()) || obj.contact_email.toLowerCase().includes(query.toLowerCase())) {
-                return obj;
-              }
-            }).map((posts, index) => (
-              <tr key={posts.id}>
-                <td>{index + 1}</td>
-                <td>{posts.name}</td>
-                <td>{posts.contact_firstname}</td>
-                <td>{posts.contact_email}</td>
-                <td>{posts.contact_phone}</td>
-                <td>{posts.created}</td>
-                <td>{posts.synced_media}</td>
-                <td>{posts.unsynced_media}</td>
-                <td>{posts.updates_media}</td>
-                <td>
-                  <Switch
-                    onChange={() => handel(posts.id)}
-                    checked={posts.status === 0 ? true : false}
-                  />
-
-                </td>
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {/* View of pagination */}
-
-        <div className="conatainer-page-bottom">
-          <div className="details">
-            <span> Showing {page*postPerpage-postPerpage+1} to {page*postPerpage} of {total} entries</span>
-          </div>
-          <div className="pagination">
-            <Pagination
-              onChange={(value) => setPage(value)}
-              pageSize={postPerpage}
-              total={total}
-              current={page}
-              showSizeChanger
-              showQuickJumper
-              onShowSizeChange={onShowSizeChange}
-              itemRender={itemRender}
-
-            />
-          </div>
+          <div>
 
           </div>
-      </center>
+          <center>
+            {/* making User tabel */}
+            <table className="table table-bordered">
+              <thead className="thead-dark ">
+                <tr>
+                  {headers.map((row) => {
+                    return <td key={row.key}>{row.label}</td>
+                  })}
+                </tr>
+              </thead>
+              <tbody>
+                {/* putting data on table by map function */}
+                {currentPosts.filter(obj => {
+                  if (query == '') {
+                    return obj;
+                  } else if (obj.name.toLowerCase().includes(query.toLowerCase()) || obj.created.toLowerCase().includes(query.toLowerCase()) || obj.contact_email.toLowerCase().includes(query.toLowerCase())) {
+                    return obj;
+                  }
+                }).map((posts, index) => (
+                  <tr key={posts.id}>
+                    <td>{index + 1}</td>
+                    <td>{posts.name}</td>
+                    <td>{posts.code}</td>
+                    <td>{posts.email}</td>
+                    <td>{posts.phone}</td>
+                    <td>{posts.date}</td>
+                    <td>{posts.synced.synced}</td>
+                    <td>{posts.unsynced}</td>
+                    <td>{posts.updated.updated}</td>
+                    <td>
+                      <Switch
+                        onChange={() => handel(posts.id)}
+                        checked={posts.status === 0 ? true : false}
+                      />
+
+                    </td>
+
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* View of pagination */}
+
+            <div className="conatainer-page-bottom">
+              <div className="details">
+                <span> Showing {page * postPerpage - postPerpage + 1} to {page * postPerpage} of {total} entries</span>
+              </div>
+              <div className="pagination">
+                <Pagination
+                  onChange={(value) => setPage(value)}
+                  pageSize={postPerpage}
+                  total={total}
+                  current={page}
+                  showSizeChanger
+                  showQuickJumper
+                  onShowSizeChange={onShowSizeChange}
+                  itemRender={itemRender}
+
+                />
+              </div>
+
+            </div>
+          </center>
         </div>
       </div>
     </>

@@ -18,14 +18,61 @@ exports.goUsers = async(req, res) => {
 
 
 exports.odoUsers = async(req, res) => {
-    db.changeUser({database:'odoads_tblcompanies'})
-    db.query("SELECT * FROM tblcompanies ", function (err, result) {
-      if (err) throw err;
+  db.changeUser({ database: "odoads_tblcompanies" }); 
+  const promises = [];
+  db.query("SELECT id,name,code,contact_email, contact_phone, created FROM tblcompanies Where db_created = 'txst'", async (err, result) => {
+    if (err) throw err;
+    result.forEach((element) => {
+      promises.push(new Promise((resolve, reject) => {
+   db.changeUser({ database: "odoads_" + element.code});
+  db.query("SELECT count(syncstatus) AS 'unsynced' FROM tblmedia_deails WHERE  syncstatus='unsynced' ", async (err,result) => {
+    if (err) {
+      res.send(reject)
+    }
   
-    res.status(200).json({
-        message:'success get',
-        data:result
+  db.query("SELECT count(syncstatus) AS 'updated' FROM tblmedia_deails WHERE syncstatus='updated' ", async (err, updated) => {
+    if (err){
+      res.send(reject)
+    }
+    // resolve(updated)
+    db.query("SELECT count(syncstatus) AS 'synced' FROM tblmedia_deails WHERE syncstatus='synced' ", async (err, synced) => {
+      if (err){
+        res.send(reject)
+      }
+     
+    result.forEach(element2 => {
+      element2['id'] = element.id
+      element2['name'] = element.name;
+      element2['code'] = element.code;
+      element2['email'] = element.contact_email;
+      element2['phone'] = element.contact_phone;
+      element2['date'] = element.created;
+      element2['updated'] = updated[0]
+      element2['synced'] = synced[0]
     })
+
+  
+    resolve(result);
+    })
+    
+  })
+ 
+  })
+      }))
+  })
+  try{
+    const result = await Promise.allSettled(promises)
+    let test = [];
+    result.forEach(element => {
+      element.value.forEach(obj => {
+        test.push(obj);
+      });
+    });
+    // Return the result
+    res.json(test);
+  }catch (err){
+    return err;
+  }
 })
 }
 

@@ -14,6 +14,8 @@ import store from './store'
 import PageNotFound from "./Components/PageNotFound/PageNotFound";
 import ProtectRoute from "./Components/Route/ProtectRoute";
 
+import Permission from "./pages/Staff/Permission";
+import StaffPermission from "./pages/Staff/StaffPermission";
 import "./App.css"
 
 function App() {
@@ -31,12 +33,18 @@ function App() {
           <Route path="/login"  element={<Login />}></Route>
 
           <Route path="/dashboard"  element={<ProtectRoute Component={DashBoard}/>}>   </Route>
-          <Route path="/userProfile"  element={<ProtectRoute Component={UserProfile}/>}> </Route>
-          <Route path="/client"  element={<ProtectRoute Component={Go_Users}/>}>    </Route>
+         
+          <Route path="/media"   element={<ProtectRoute Component={Media}/>}>       </Route>
           <Route path="/vanders" element={<ProtectRoute Component={Odo_Users}/>}>   </Route>
+          <Route path="/client"  element={<ProtectRoute Component={Go_Users}/>}>    </Route>
+
+          <Route path="/permission"  element={<ProtectRoute Component={Permission}/>}>    </Route>
+          <Route path="/staffPermission"  element={<ProtectRoute Component={StaffPermission}/>}>    </Route>
+
           <Route path="/accept"  element={<ProtectRoute Component={Accept}/>}>      </Route>
           <Route path="/reject"  element={<ProtectRoute Component={Rejected}/>}>    </Route>
-          <Route path="/media"   element={<ProtectRoute Component={Media}/>}>       </Route>
+
+          <Route path="/userProfile"  element={<ProtectRoute Component={UserProfile}/>}> </Route>
 
 
           <Route path='*' element={<PageNotFound />}></Route>

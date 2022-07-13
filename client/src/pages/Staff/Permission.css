@@ -1,0 +1,30 @@
+.permissionFilter{
+    display: flex;
+    text-align: center;    
+}
+.permissionFilter>div{
+    padding: 10px 20px;
+    text-align: center;
+    margin:0 10px 10px 0;
+    border: 1px solid  rgb(131, 126, 126);
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.permissionFilter>div>h4{
+    align-items: center;
+    font-size: 18px;
+}
+.permissionFilters>form{
+    display: flex;
+}   
+
+.permissionRole{
+    margin: 20px 0;
+}
+.permissionRole>select{
+    display: block;
+    width: 10vw;
+    margin-top: 10px;
+    padding: 10px;
+    outline: none;
+}

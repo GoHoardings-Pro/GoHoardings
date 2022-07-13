@@ -29,7 +29,8 @@ const GoUser = () => {
   const [query, setQuery] = useState("");
   const [button,setButton] = useState('Show')
 
-
+  
+  
   useEffect(() => {
     const fetchPost = async () => {
       const res = await Axios.get("http://localhost:8080/api/v1/users/goUsers")
@@ -37,6 +38,7 @@ const GoUser = () => {
       setTotal(res.data.data.length)
     };
     fetchPost();
+    
   }, []);
 
 
@@ -166,8 +168,9 @@ console.log(gosts);
                                       <td>{value.campaigid}</td>
                                       <td>{value.category_name}</td>
                                       <td>{value.status === 1 ? "Booked" : "Pending"}</td>
-                                      <td>{value.created}</td>
-                                      <td>{ <a href={`https://gohoardings.com/${value.category_name}`} target='_blanck'>{value.meta_title}</a> }</td>
+                                      <td>{(value.created)}</td>
+                                      <td>{ <a href={`https://gohoardings.com/services/${value.category_name}/${value.meta_title}`} target='_blanck'>{value.meta_title}</a> }</td>
+                                      {/* <td>{ <a href={`https://gohoardings.com/services/mall-media/facade-dlf-promenade-delhi`} target='_blanck'>{value.meta_title}</a> }</td> */}
                                     </tr>
                                   ))}
                                 </tbody>

@@ -16,13 +16,19 @@ app.use(cookieparser());
 
 const adminRoute = require('./routes/adminRoute.js');
 const usersRoutes = require('./routes/usersRoutes');
-const syncMediaRoutes = require('./routes/syncMediaRoutes')
-const mediaRouter = require('./routes/mediaRoutes')
+const syncMediaRoutes = require('./routes/syncMediaRoutes');
+const mediaRouter = require('./routes/mediaRoutes');
+const permissionRoute = require('./routes/permissionRoute');
+const staffRoute = require('./routes/staffRoute');
+
 
 app.use('/api/v1/admin', adminRoute);
 app.use('/api/v1/users', usersRoutes);
 app.use('/api/v1/syncMedia', syncMediaRoutes);
-app.use('/api/v1/media', mediaRouter)
+app.use('/api/v1/media', mediaRouter);
+app.use('/api/v1/permission', permissionRoute);
+app.use('/api/v1/staff', staffRoute);
+
 
 
 

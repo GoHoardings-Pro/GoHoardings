@@ -180,7 +180,7 @@ const Media = () => {
                     <div className="page-title">
                         <h2>Media Inventory</h2>
                     </div>
-                    <form className="media-form">
+                    <form className="media-form" onSubmit={'submitHandler'}>
                         <div className="form1">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Media Code</label>
@@ -188,10 +188,9 @@ const Media = () => {
                             </div>
                             <div className="form-group">
                                 <label>Media Owner Company Name:</label>
-                                <input type="text" id="search" placeholder="media code .."  onChange={(e) => { setCompany(e.target.value); }} />
+                                <input type="text" id="search" placeholder="media code .." onChange={(e) => { setCompany(e.target.value); }} />
                             </div>
                         </div>
-
                         <div className="form2">
                             <div className="form-group">
                                 <label>Media Category:</label>
@@ -216,11 +215,30 @@ const Media = () => {
 
                             <div className="form-group">
                                 <label>Illimination Type:</label>
-
+                                <select name="" id="" searchable={'search Hear ....'}>
+                                    <option value="back lit">lit</option>
+                                    <option value="nonlit">Non - lit</option>
+                                </select>
                             </div>
+                            <input type="submit" value={"Search"} style={{ width: '21%' }} />
                         </div>
+                        {/* <button type="submit" class="btn btn-primary ml-3 ">Search</button> */}
                     </form>
-                    <button type="submit" class="btn btn-primary ml-3 ">Search</button>
+                    <section className="media-result mt-4">
+                        <table className="table" style={{color:'white', background:'tomato'}}>
+                            <thead>
+                                <tr>
+                                    <th scope="col">S.NO</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">UserID</th>
+                                    <th scope="col">Contact NO</th>
+                                    <th scope="col">Switch</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </section>
                 </div>
             </div>
         </>

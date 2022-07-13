@@ -20,5 +20,40 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2;
 }
 body{
-    overflow: hidden;
+    overflow-x: hidden;
+}
+
+input[type=submit]{
+    color: rgb(249, 252, 252);
+    width: 20vw;
+    display: block;
+    margin: auto;
+    text-align: center;
+    background: tomato;
+    font-size: 1.2rem;
+    transition: all 0.5ms;
+}
+input[type=submit]:hover{
+    background: rgba(255, 99, 71, 0.925);
+}
+input#search {
+    color: inherit;
+    padding: 12px 10px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 1px 1px rgba(0, 0,0, 0.1);
+    margin-top: 5px;
+}
+.table>thead{
+ color: white;
+  background: tomato;
+}
+.table>thead>tr{
+    border: inherit;
+
+}
+table{
+    border-collapse:inherit
 }

@@ -19,10 +19,47 @@
     padding: 12px 5px 8px 5px;
     font-size: 18px;
 }
-.userProfileContainer{
-    display: flex;
-    /* align-items: center; */
+
+
+.page-container{
+    /* border: 1px solid red; */
 }
+.page-container-nav{
+    /* border: 1px solid red; */
+    width: 90%;
+
+}
+.page-container-nav ul{
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 2fr)); */
+    display: flex;
+    flex-wrap: wrap;
+   }
+.page-container-nav ul li{
+    border: 1px solid #f3eeee;
+    color: #131111;
+    padding: 1em 3em;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin:10px;
+    cursor: pointer;
+    text-align: center;
+    flex: 1 1 250px;
+}
+
+.navActive{
+    
+    background: rgb(131, 126, 126);
+    color: white;
+}
+.userProfileHidden{
+    display: none;
+}
+.userProfileContainer{
+    margin: 3em;
+    width: 87%;
+}
+
 
 .userProfilePhoto{
     width: 30%;
@@ -31,19 +68,28 @@
     width: 90%;
 }
 .userProfileDetails{
-    /* margin: 30px 40px; */
-    width: 50%;
+    padding: 20px;
+    border: 1px solid rgb(211, 211, 211);
+    margin: auto;
 }
 .userProfileDetails>div{
     width: 100%;
-    padding: 12px;
+    padding: 1.2em;
+    display: flex;
+    align-items: center;
+    /* margin: auto; */
+    border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 .userProfileDetails>div>label{
-    font-size: 28px;
+    font-size: 1.2rem;
     
 }
 .userProfileDetails input{
-    padding: 10px;
+    padding: 10px 16px;
+    border: 1px solid rgba(0,0,0,0.1);
+    width: 90%;
+    margin-left: auto;
+    font-size: 14px;
 }
 .userProfileDetails>button{
     padding: 10px;
@@ -55,3 +101,5 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+
