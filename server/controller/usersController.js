@@ -182,7 +182,10 @@ exports.odoSwitchToggle = async(req,res) => {
 
 exports.goUserSwitchToggle = async(req,res) =>{
   const toggle = req.body.id
+  console.log(toggle);
+
   db.changeUser({database : "odoads_tblcompanies"})
+
   db.query("SELECT * from tblcontacts WHERE id = "+toggle+" ", async (err, result) => {
       if (err) throw err;
       let toggleValue = result[0].invoice_emails
@@ -190,8 +193,8 @@ exports.goUserSwitchToggle = async(req,res) =>{
           db.query("UPDATE tblcontacts SET invoice_emails = 1 WHERE id = "+toggle+"", async (err,result) => {
               if (err) throw err;
               db.query('SELECT * FROM tblcontacts', async (err, result) => {
-                  if (err) throw err;
-                  return res.send(result);
+                  if (err) throw err;    
+                res.send(result);
                 });
           })
       } else {
@@ -199,7 +202,8 @@ exports.goUserSwitchToggle = async(req,res) =>{
             if (err) throw err;
             db.query('SELECT * FROM tblcontacts', async (err, result) => {
               if (err) throw err;
-              return res.send(result);
+          
+              res.send(result);
             });
           });
         }

@@ -80,18 +80,17 @@ const pageCards = [{
 ]
 const DashBoard = () => {
     const navigate = useNavigate();
-    const { isAuthenticate, admin } = useSelector( state => state.admin);
+    const { isAuthenticated, admin } = useSelector( state => state.admin);
 
-    console.log(isAuthenticate,admin);
 
     useEffect(()=>{
-        console.log(isAuthenticate);
-        if( isAuthenticate === true){
+        if( isAuthenticated === true){
           navigate('/dashboard')
         }else{
-        //   navigate('/login')
+          navigate('/login')
         }
-      },[isAuthenticate])
+      },[isAuthenticated])
+      
     return (
         <>
             <div className="containers">

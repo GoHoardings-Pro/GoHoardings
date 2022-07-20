@@ -8,6 +8,7 @@ import { Pagination, Result } from "antd";
 import SideBar from "../../Components/Navbar/Sidebar";
 
 Modal.setAppElement("#root");
+
 const StaffPermission = () => {
     const [roleList, setRoleList] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -25,18 +26,9 @@ const StaffPermission = () => {
     const [page, setPage] = useState(1);
     const [postPerpage, setPostPerPage] = useState(10);
 
-    // getting data from server
-    const getDATA = async () => {
-        const { data } = await axios.get("/api/v1/staff/list");
-        setPosts(data);
-        setTotal(data.length);
-    };
+  
+  
 
-    useEffect(() => {
-        getDATA(); //List of all users
-        getRoles()
-    }, []);
-    // changing value of inputs
     const changehandler = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
@@ -44,7 +36,6 @@ const StaffPermission = () => {
     // make a new user
     const addStaff = async () => {
         const { data } = await axios.post("/api/v1/staff/list", {
-            // const { data } = await axios.post("http://localhost:300/create", {
             email: email,
             password: password,
             role: role,
@@ -55,6 +46,7 @@ const StaffPermission = () => {
             setMess(data.message);
         }
     };
+
     // functin for hge toggle funtionality
     const toggle = async (id) => {
         const { data } = await axios.post("/api/v1/staff/toggle", {
@@ -63,10 +55,11 @@ const StaffPermission = () => {
         setPosts(data);
     };
 
-    const permissions = () => {
-        navigate("./permisssion");
-    };
+    // const permissions = () => {
+    //     navigate("./permisssion");
+    // };
     // update A user
+
     async function updateuser(e, id) {
 
         const { data } = await axios.post(`/api/v1/staff/update`, {
@@ -94,7 +87,7 @@ const StaffPermission = () => {
             }
         });
     }
-    async function updatePermission() {
+    const updatePermission= async() =>{
         const { data } = await axios.post(`/api/v1/staff/updatePermission`, {
             permission: permission,
             role: user.role,
@@ -107,7 +100,7 @@ const StaffPermission = () => {
         }
     }
 
-    async function changeFunc(e) {
+    const changeFunc= async(e)=> {
         const { data } = await axios.post(`/api/v1/staff/rolePermission`, {
             role: e.target.value,
             id: user.id,
@@ -117,7 +110,7 @@ const StaffPermission = () => {
 
     const indexOfLastPage = page * postPerpage;
     const indexOfFirstPage = indexOfLastPage - postPerpage;
-    const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);
+    const currentPosts = posts.length>0 && posts.slice(indexOfFirstPage, indexOfLastPage);
 
     const onShowSizeChange = (current, pageSize) => {
         setPostPerPage(pageSize);
@@ -133,10 +126,21 @@ const StaffPermission = () => {
         return originalElement;
     };
 
+      // getting data from server
+      const getDATA = async () => {
+        const { data } = await axios.get("/api/v1/staff/list");
+        setPosts(data);
+        setTotal(data.length);
+    };
+
     const getRoles = async () => {
         const { data } = await axios.get(`/api/v1/staff/rolePermission`);
         setRoleList(data);
     };
+    useEffect(() => {
+        getDATA();
+        getRoles();
+    }, []);
 
     return (
 
@@ -177,7 +181,7 @@ const StaffPermission = () => {
                             <div className="field m-2 p-2">
                                 <label>Role</label>
                                 <select id="selectBox" onChange={(e) => setRole(e.target.value)}>
-                                    {roleList.map((obj, i) => (
+                                    {roleList.length>0 && roleList.map((obj, i) => (
                                         <option value={obj.role}>{obj.role}</option>
                                     ))}
                                 </select>
@@ -207,7 +211,7 @@ const StaffPermission = () => {
                     </thead>
                     <tbody>
                         {/* map funtion on all data */}
-                        {currentPosts
+                        {currentPosts.length>0 && currentPosts
                             .filter((obj) => {
                                 if (query == "") {
                                     return obj;

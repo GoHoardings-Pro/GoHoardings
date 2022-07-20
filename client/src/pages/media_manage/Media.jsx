@@ -4,7 +4,7 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-import { MultiSelect } from "react-multi-select-component";
+import Select from 'react-select'
 import SideBar from '../../Components/Navbar/Sidebar'
 import './Media.css'
 import axios from "axios";
@@ -33,17 +33,14 @@ const Media = () => {
     const [getCity, setgetcity] = useState([]);
     const [getcomp, setcomp] = useState([]);
     const [Users, fetchUsers] = useState([]);
-    const [cityname, setcityname] = useState([])
-    const [compname, setcompname] = useState([])
-    const [state, setState] = useState(false);
+    // const [cityname, setcityname] = useState([])
+    // const [compname, setcompname] = useState([])
+    // const [state, setState] = useState(false);
     const [formData, setFormData] = useState({});
 
 
 
 
-    const changeHandler = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
 
     const ShowDetails = async () => {
         const requestOptions = {
@@ -72,7 +69,7 @@ const Media = () => {
     let City = [];
     let Cities = []
     getCity.forEach((obj) => {
-        City.push({ "label": obj.name, "value": obj.name })
+        City.push({ label: obj.name, value: obj.name })
         Cities.push(obj.name)
     });
 
@@ -84,87 +81,117 @@ const Media = () => {
 
     let Comp = [];
     getcomp.forEach((value) => {
-        // Comp.push({ "label": value.name, "value": value.name })
-        Comp.push(value.name)
+        Comp.push({ label: value.name, value: value.name })
+
     });
 
-    // let MediaOption=[
-    //     {label: "traditional-ooh-media", value: "traditional-ooh-media"},{
-    //     label: "digital-media", value: "digital-media"},{
-    //     label: "transit-media", value: "transit-media"},{
-    //     label: "mall-media", value: "mall-media"},{
-    //     label: "airport-media", value: "airport-media"},{
-    //     label: "inflight_media", value: "inflight_media"},{
-    //     label: "office-media", value: "office-media"}
-    // ]
+    let MediaOption = [
+        { label: "traditional-ooh-media", value: "traditional-ooh-media" }, {
+            label: "digital-media", value: "digital-media"
+        }, {
+            label: "transit-media", value: "transit-media"
+        }, {
+            label: "mall-media", value: "mall-media"
+        }, {
+            label: "airport-media", value: "airport-media"
+        }, {
+            label: "inflight_media", value: "inflight_media"
+        }, {
+            label: "office-media", value: "office-media"
+        }
+    ]
+    // const MediaOption = ['traditional-ooh-media',"digital-media","transit-media","mall-media","airport-media","inflight_media","office-media"]
+
+
+
 
     useEffect(() => {
-        ShowDetails();
         Showcity();
         ShowCompany();
     }, []);
 
-    useEffect(() => {
-        if (code) {
-            for (let index = 1; index < 7; index++) {
-                document.getElementsByClassName("all")[index].disabled = true;
-            }
-        } else {
-            for (let index = 1; index < 7; index++) {
-                // document.getElementsByClassName("all")[index].disabled = false;
-            }
+
+    // const form1Ref = useRef(null);
+    // const form2Ref = useRef(null);
+
+
+    const changeHandler = (e, tab) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+    // useEffect(() => {
+    //     if (formData?.mediaCode || formData?.mediaCompanyName) {
+    //         form2Ref.current.classList.add('formHide2')
+    //     } else {
+    //         form2Ref.current.classList.remove('formHide2')
+    //     }
+
+    //     if (formData?.mediaCategory || formData?.city || formData?.location || formData?.subcategory || formData?.type) {
+    //         form1Ref.current.classList.add('formHide')
+    //     } else {
+    //         form1Ref.current.classList.remove('formHide')
+    //     }
+    // }, [formData, city])
+
+    const clickHandler = (form) => {
+
+
+
+    }
+
+    const submithandler = (e) => {
+        e.preventDefault();
+        console.log(formData);
+    }
+    const mediaRef = useRef(null);
+    const mediaCompanyRef = useRef(null);
+    const otherRef = useRef(null);
+
+
+    const mediaFormRef = useRef(null);
+    const mediaCompanyFormRef = useRef(null);
+    const otherFormRef = useRef(null);
+
+
+    const switchTab = (e, tab) => {
+        console.log(tab);
+
+        if (tab === 'media') {
+            mediaFormRef.current.classList.remove('userProfileHidden')
+            mediaCompanyFormRef.current.classList.add('userProfileHidden')
+            otherFormRef.current.classList.add('userProfileHidden')
+
+            mediaRef.current.classList.add('navActive')
+            mediaCompanyRef.current.classList.remove('navActive')
+            otherRef.current.classList.remove('navActive')
+
+
+
         }
-    }, [code]);
+
+        if (tab === 'mediaCompany') {
+            mediaFormRef.current.classList.add('userProfileHidden')
+            mediaCompanyFormRef.current.classList.remove('userProfileHidden')
+            otherFormRef.current.classList.add('userProfileHidden')
+
+            mediaRef.current.classList.remove('navActive')
+            mediaCompanyRef.current.classList.add('navActive')
+            otherRef.current.classList.remove('navActive')
 
 
-    const mediaRef = useRef('');
-    const mediaSubRef = useRef('');
-    const dropEl = document.querySelector('.dropEl')
-    const dropEl1 = document.querySelector('.dropEl1')
-
-    const formHandler = (e, field) => {
-        const userInput = e.target.value.toLowerCase()
-        console.log(userInput);
-        if (userInput.length === 0) {
-            dropEl.style.height = 0
-            return dropEl.innerHTML = dropEl1.innerHTML = ''
         }
-        let filteredWords
-        if (field === 'media') {
-            filteredWords = Cities.filter(word => word.toLowerCase().includes(userInput)).sort().splice(0, 5)
+        if (tab === 'other') {
+            mediaFormRef.current.classList.add('userProfileHidden')
+            mediaCompanyFormRef.current.classList.add('userProfileHidden')
+            otherFormRef.current.classList.remove('userProfileHidden')
 
-        } else if (field === 'mediaSub') {
-            filteredWords = Comp.filter(word => word.toLowerCase().includes(userInput)).sort().splice(0, 5)
+            mediaRef.current.classList.remove('navActive')
+            mediaCompanyRef.current.classList.remove('navActive')
+            otherRef.current.classList.add('navActive')
+
+
         }
 
-        dropEl.innerHTML = dropEl1.innerHTML = ''
-        filteredWords.forEach(item => {
-            const listEl = document.createElement('li')
-            listEl.textContent = item
 
-            if (item === userInput) {
-                listEl.classList.add('match')
-            }
-            if (field === 'media') {
-                dropEl.appendChild(listEl)
-
-            } else if (field === 'mediaSub') {
-                dropEl1.appendChild(listEl)
-            }
-        })
-
-        // if(dropEl.children[0] === undefined) {
-        //     return dropEl.style.height = 0
-        // }
-
-        let totalChildrenHeight
-        if (field === 'media') {
-            totalChildrenHeight = dropEl.children[0].offsetHeight * filteredWords.length
-            dropEl.style.height = totalChildrenHeight + 'px'
-        } else if (field === 'mediaSub') {
-            totalChildrenHeight = dropEl1.children[0].offsetHeight * filteredWords.length
-            dropEl1.style.height = totalChildrenHeight + 'px'
-        }
 
     }
 
@@ -180,52 +207,87 @@ const Media = () => {
                     <div className="page-title">
                         <h2>Media Inventory</h2>
                     </div>
-                    <form className="media-form" onSubmit={'submitHandler'}>
-                        <div className="form1">
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Media Code</label>
-                                <input type="text" id="search" placeholder="media code .." onChange={e => setCode(e.target.value)} />
+
+                    <div className="permissionFilters">
+                        <div className="permissionFilter">
+                            <div className="existUser navActive" ref={mediaRef} onClick={(e) => switchTab(e, 'media')}>
+                                <strong>Media Code</strong>
                             </div>
-                            <div className="form-group">
-                                <label>Media Owner Company Name:</label>
-                                <input type="text" id="search" placeholder="media code .." onChange={(e) => { setCompany(e.target.value); }} />
-                            </div>
-                        </div>
-                        <div className="form2">
-                            <div className="form-group">
-                                <label>Media Category:</label>
-                                <input type="text" id='search' ref={mediaRef} placeholder="Media Category ...." onChange={(e) => formHandler(e, 'media')} />
-                                <ul className="dropEl" ref={dropEl}></ul>
-                            </div>
-                            <div className="form-group">
-                                <label>Media Subcategory:</label>
-                                <input type="text" name="media-subcategory" ref={mediaSubRef} id="search" placeholder="Media SubCategory ..." onChange={(e) => formHandler(e, 'mediaSub')} />
-                                {/* <ul className="dropEl1" ref={dropEl}></ul> */}
+                            <div className="newPermission " ref={mediaCompanyRef} onClick={(e) => switchTab(e, 'mediaCompany')}>
+                                <strong>Media Company Name</strong>
 
                             </div>
-                            <div className="form-group">
-                                <label>City:</label>
-                                <input type="text" id='search' ref={mediaRef} placeholder="Media Category ...." onChange={(e) => formHandler(e, 'media')} />
-                                <ul className="dropEl" ref={dropEl}></ul>
+                            <div className="newPermission " ref={otherRef} onClick={(e) => switchTab(e, 'other')}>
+                                <strong>Others</strong>
+
                             </div>
-                            <div className="form-group">
+                        </div>
+                        <div className="permissionRole" ref={mediaFormRef}>
+                            <form className="form" >
+                                <div class="form-group form-group-media" >
+                                    <label for="exampleFormControlInput1">Media Code :</label>
+                                    <input type="text" id="search" name="mediaCode" placeholder="media code .." onChange={(e) => changeHandler(e, "form1")} autoFocus/>
+                                </div>
+                                <input type="submit" value={"Search"}  />
+                            </form>
+                        </div>
+                        <div className="newRole userProfileHidden" ref={mediaCompanyFormRef}>
+                            <form className="form">
+                                <div class="form-group form-group-media" >
+                                    <label for="exampleFormControlInput1">mediaCompany :</label>
+                                    <input type="text" id="search" name="mediaCompany" placeholder="mediaCompany" onChange={(e) => changeHandler(e, "form1")} autoFocus/>
+                                </div>
+                                <input type="submit" value={"Search"} />
+                            </form>
+                        </div>
+                        <div className="newRole userProfileHidden" ref={otherFormRef}>
+                            <form className="form">
+                                <div className="form-group" >
+                                    <label>Media Category:</label>
+                                    <Select options={MediaOption} />
+                                </div>
+                                <div className="form-group" >
+                                    <label>Media Subcategory:</label>
+                                    <Select
+                                        // onChange={changeHandler}
+                                        isMulti
+                                        name="colors"
+                                        options={Comp}
+                                        className="basic-multi-select"
+                                        classNamePrefix="select" />
+                                </div>
+                                <div className="form-group" >
+                                    <label>City:</label>
+                                    <Select
+                                        options={City}
+                                        displayValue="value"
+                                    // onSelect={setCity}
+
+                                    />
+                                    {/* <input type="text" id='search' name="city" onChange={changeHandler}   placeholder="City ...." /> */}
+                                </div>
+                                <div className="form-group" >
                                 <label>Location:</label>
-                                <input type="text" className="all" onChange={e => setLocation(e.target.value)} />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Illimination Type:</label>
-                                <select name="" id="" searchable={'search Hear ....'}>
-                                    <option value="back lit">lit</option>
-                                    <option value="nonlit">Non - lit</option>
-                                </select>
-                            </div>
-                            <input type="submit" value={"Search"} style={{ width: '21%' }} />
+                                <Select type="text" className="all" name="location" onChange={changeHandler} ></Select>
+                                </div>
+                                <div className="form-group" >
+                                    <label for='type'>Illimination Type:</label>
+                                    <Select name="type" id="type" onChange={changeHandler}  >
+                                        <option value={'lit'}>lit</option>
+                                        <option value={'non-lit'}>Non - lit</option>
+                                    </Select>
+                                </div>
+                                <input type="submit" value={"Search"}  />
+                            </form>
                         </div>
-                        {/* <button type="submit" class="btn btn-primary ml-3 ">Search</button> */}
-                    </form>
+                    </div>
+
+
+
+
+
                     <section className="media-result mt-4">
-                        <table className="table" style={{color:'white', background:'tomato'}}>
+                        <table className="table" style={{ color: 'white', background: 'tomato' }}>
                             <thead>
                                 <tr>
                                     <th scope="col">S.NO</th>

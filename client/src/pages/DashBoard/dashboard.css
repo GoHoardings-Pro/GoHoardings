@@ -1,7 +1,10 @@
 .containers{
     display: flex;
-    gap: 20px;
+
     color: #626262;
+}
+@media screen and (max-width:650px){
+  
 }
 .container-pages{
     margin: 80px 0 0 0;

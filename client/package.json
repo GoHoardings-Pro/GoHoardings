@@ -12,6 +12,7 @@
     "bootstrap": "^5.1.3",
     "chart.js": "^3.8.0",
     "framer-motion": "^6.3.4",
+    "multiselect-react-dropdown": "^2.0.25",
     "pptxgenjs": "^3.10.0",
     "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import BootstrapTable from 'react-bootstrap-table-next';
+// import BootstrapTable from 'react-bootstrap-table-next';
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
-import PaginationFactory from "react-bootstrap-table2-paginator";
+// import PaginationFactory from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import SideBar from "../../Components/Navbar/Sidebar";
 import { Pagination } from "antd"
+// import {Multiselect} from 'multiselect-react-dropdown'
 import Switch from "react-switch"
 
 import './goUsers.css'
@@ -33,7 +34,7 @@ const GoUser = () => {
   
   useEffect(() => {
     const fetchPost = async () => {
-      const res = await Axios.get("http://localhost:8080/api/v1/users/goUsers")
+      const res = await Axios.get("/api/v1/users/goUsers")
       setPosts(res.data.data)
       setTotal(res.data.data.length)
     };
@@ -44,17 +45,15 @@ const GoUser = () => {
 
 
   const getData = async (userid) => {
-    await Axios.put("http://localhost:8080/api/v1/users/goUsers", {
-      userid: userid
-    }).then((response) => {
-      setGosts(response.data)
-      console.log(response.data);
-    })
+    const {data} = await Axios.put("/api/v1/users/goUsers", {userid:userid})
+    console.log(data);
+    setGosts(data)
+    // console.log(data);
+    
   }
 
   const toggle = index => {
     if (show === index) {
-      // gosts.length > 0 ? setButton('hide') : setButton('No Data')
       return setShow(null)
     }
     setShow(index)
@@ -63,11 +62,12 @@ const GoUser = () => {
   //Get Current Posts (Pagination)
   const indexOfLastPage = page * postPerpage;
   const indexOfFirstPage = indexOfLastPage - postPerpage;
-  const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);
+  const currentPosts =  posts.slice(indexOfFirstPage, indexOfLastPage);
+
+  console.log(currentPosts.length>0);
 
 
-
-  const itemRender = (current, type, originalElement) => {
+  const itemRender = ( current,type, originalElement) => {
     if (type === "prev") {
       return <a>Previous</a>
     }
@@ -77,15 +77,13 @@ const GoUser = () => {
     return originalElement
   }
 
-  const handel = (id) => {
-    Axios.post("http://localhost:8080/api/v1/users/goUsers", {
-      id: id
-    }).then((res) => {
-      setPosts(res.data)
-    })
-  }
+  const handel = async(id) => {
+    console.log(id);
+    const {data} = Axios.post("/api/v1/users/goUsers", {id:id})
+    console.log(data);
+    // setPosts(data)
+    }
 
-console.log(gosts);
 
   return (
     <>
@@ -125,7 +123,7 @@ console.log(gosts);
             </thead>
             <tbody>
              
-              {currentPosts.filter(obj => {
+              {currentPosts.length >0 && currentPosts.filter(obj => {
                 if (query == '') {
                   return obj;
                 } else if (obj.firstname.toLowerCase().includes(query.toLowerCase()) || obj.email.toLowerCase().includes(query.toLowerCase())) {
@@ -145,7 +143,7 @@ console.log(gosts);
                   <tr className="modalView">
                     {show === index ?
                         <td colSpan={7}>
-                        {gosts.length ?
+                        {gosts.length>0 ?
                           <>
                           <div >
 
@@ -214,6 +212,7 @@ console.log(gosts);
                 current={page}
                 showSizeChanger
                 showQuickJumper
+                
                 itemRender={itemRender}
               />
             </div>

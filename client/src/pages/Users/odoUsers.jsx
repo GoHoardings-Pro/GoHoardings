@@ -26,7 +26,7 @@ const Odousers = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const res = await Axios.get("http://localhost:8080/api/v1/users/odoUsers")
+      const res = await Axios.get("/api/v1/users/odoUsers")
       setPosts(res.data)
       setTotal(res.data.length)
 
@@ -37,13 +37,13 @@ const Odousers = () => {
 
 
   const handel = (id) => {
-    Axios.post("http://localhost:8080/api/v1/users/odoUsers", {
+    Axios.post("/api/v1/users/odoUsers", {
       id: id
     }).then((res) => {
       setPosts(res.data)
     })
   }
-
+ 
   const headers = [
     { key: "id", label: "ID" },
     { key: "name", label: "Name" },
@@ -78,7 +78,6 @@ const Odousers = () => {
   }
 
 
-console.log(posts);
   return (
     <>
       <div className="containers">

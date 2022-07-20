@@ -101,6 +101,7 @@ exports.toggle = async (req, res, next) => {
 
 exports.roles = async (req, res, next) => {
     try{
+      db.changeUser({database:'users'})
         db.query("SELECT role FROM tbl_roles", async(err,result) => {
             if (err){
                 res.send({"err": err,message :"User Not Created Check Manually"})

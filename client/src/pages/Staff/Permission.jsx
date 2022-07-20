@@ -11,13 +11,9 @@ const Permission = () => {
     const [user, setUser] = useState([]);
     const [hrole, setHrole] = useState('')
 
-    const getRoles = async () => {
-        const { data } = await axios.get(`/api/v1/staff/rolePermission`);
-        setRoleList(data);
-    };
+   
     const handleClick = (event) => {
         let data = [...permission];
-       console.log(data);
         data.forEach((element) => {
             if (event.currentTarget.checked) {
                 if (element.permission_id == event.currentTarget.id) {
@@ -44,10 +40,21 @@ const Permission = () => {
     };
 
     async function changeFunc(e) {
-        const { data } = await axios.post(`/api/v1/permission/getPermissions`, {
-            role: e.target.value,
-        });
-        setPermission(data);
+
+        if(e === 'admin'){
+            console.log("admin");
+            const res = await axios.post(`/api/v1/permission/getPermissions`, {
+                role:  'Admin'
+            });
+            setPermission(res.data)
+
+            }else{
+
+            const { data } = await axios.post(`/api/v1/permission/getPermissions`, {
+                role: e.target.value
+            });
+            setPermission(data);
+        }
 
     }
 
@@ -64,18 +71,28 @@ const Permission = () => {
         setHrole(e.target.value)
     }
     const updateRole = async (e) => {
-        const data = await axios.post(`/api/v1/permission/updateStaffPermission`, {
+        const {data} = await axios.post(`/api/v1/permission/updateStaffPermission`, {
             permission: permission,
             role: hrole,
             user_id: selectUser
-        }).then(data)
+        })
     }
 
-    useEffect(async() => {
-        getRoles();
-        
+    const getRoles = async () => {
+        const { data } = await axios.get(`/api/v1/staff/rolePermission`);
+        setRoleList(data);
+        console.log(data);
+    };
+
+    const setPer = async() =>{
         const { data } = await axios.get(`/api/v1/permission/makePermission`)
         setPermission(data);
+        console.log(data);
+    }
+
+    useEffect(() => {
+        getRoles();
+        changeFunc('admin')
       
     }, []);
 
@@ -99,6 +116,8 @@ const Permission = () => {
         // notPerm(e);
         // console.log(permission);
         // refreshPage()
+       setPer();
+
         
 
      }
@@ -109,6 +128,9 @@ const Permission = () => {
 
         newRef.current.classList.remove('navActive')
         existRef.current.classList.add('navActive')
+
+        changeFunc('admin');
+
      }
 
 
@@ -140,7 +162,6 @@ const Permission = () => {
                             changeFunc(e);
                             getUsers(e);
                         }}>
-                            <option>select</option>
                             {roleList.length > 0 && roleList.map((obj, i) => (
                                 <option value={obj.role}>{obj.role}</option>
                             ))}
@@ -148,7 +169,7 @@ const Permission = () => {
                     </div>
                     <div className="newRole userProfileHidden" ref={newRoleRef}>
                     <form onSubmit={addrole}>
-                        <label htmlFor="">Write Role Name :</label>
+                        <label htmlFor="">Role Name :</label>
                         <input className="input" type="text" name="text" placeholder="Create A NEW ROLE" onChange={(e) => setNewRole(e.target.value)} style={{width:'30%', border:'1px solid rgba(0,0,0,0.1)',padding:'10px'}}/>
                         {/* <input type="submit" text="sumbit" /> */}
                     </form>
@@ -186,11 +207,11 @@ const Permission = () => {
                                 <input type="submit" style={{padding:'10px', margin:'30px 0 0 0'}} />
                             </tbody>
                         </table>
-                        {/* <div>
+                        <div>
 
                             {user.map((obj, i) => (
                                 <>
-                                    <label className="m-1 p-1">{obj.email}</label>
+                                    <label >{obj.email}</label>
                                     <input
                                         type="checkbox"
                                         value={obj.id}
@@ -200,7 +221,7 @@ const Permission = () => {
                                 </>
                             ))}
 
-                        </div> */}
+                        </div>
                     </form>
                 </div>
 

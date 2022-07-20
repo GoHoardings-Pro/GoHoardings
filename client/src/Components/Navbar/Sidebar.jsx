@@ -284,20 +284,20 @@ const SideBar = () => {
           <div className="nav-logo">
             <img src="/assests/logo.png" alt="" />
           </div>
-        <div className="nav-items">
+        <div className="nav-items ">
             <ul>
               <li className='nav-item'><AiOutlineAlignRight onClick={toggle} /></li>
               <li className='nav-item'><AiOutlineSearch /></li>
             </ul>
             <ul>
-              <li className='nav-item'><BsArrowsFullscreen />
+              <li className='nav-item nav-item-res'><BsArrowsFullscreen />
                 
               </li>
               <li className='nav-item'><BsBell />
               <div className="nav-dropdown-container">
                   <div className="dropdown-header">
                     <strong>Notification</strong>
-                    <span>06</span>
+                    <span style={{padding:'2px 6px'}}>06</span>
                   </div>
                   <div className="dropdownItem">
                     <ul>
@@ -345,7 +345,7 @@ const SideBar = () => {
               </li> */}
               <li className='nav-item'><BsFillPersonFill />
               <div className="nav-dropdown-container personal-view">
-                   <div className="dropdown-header" onClick={dashUser}>
+                   <div className="dropdown-header">
                     <strong>{admin && admin.name}</strong>
                     <span>{admin && admin.email}</span>
                   </div>
@@ -371,7 +371,7 @@ const SideBar = () => {
         <motion.div
           animate={{
             width: isOpen ? "220px" : "45px",
-
+            
             transition: {
               duration: 1,
               type: "spring",
@@ -379,21 +379,13 @@ const SideBar = () => {
             },
           }}
           className={`sidebar `}
-        >
+          >
           <div>
-            <AnimatePresence>
-              {isOpen && (
-                <motion.h1
-                  variants={showAnimation}
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  className="logo"
-                >
-                </motion.h1>
-              )}
-            </AnimatePresence>
-
+          <div className="nav-logo-res">
+           {isOpen ?<> <img src="/assests/logo.png" alt="" />
+            <i className="fa-solid fa-xmark" style={{fontSize:'28px'}} onClick={toggle}></i></>:<><AiOutlineAlignRight onClick={toggle} style={{fontSize:'28px',margin:'5px auto'}}/></>}
+          </div>
+          <hr className="hr"/>
             <div className="bars">
             </div>
           </div>

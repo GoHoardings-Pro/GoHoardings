@@ -224,14 +224,14 @@ exports.singleUser = async (req, res, next) =>{
 
 exports.makePermission = async (req, res, next) =>{
   try{ 
-    db.query("SELECT * FROM tbl_empty_permissions", async(err, result) => {
+    db.changeUser({database:'users'})
+    db.query("SELECT permissionid AS permission_id,can_view,can_view_own,can_edit,can_create,can_delete  FROM tbl_empty_permissions", async(err, result) => {
       if (err){
           res.send({"err": err,message :"User Not Created Check Manually"})
         }else if (result == []){
             res.send({false: `No Data Found on DataBase`})
        } else {
           res.send(result)
-          // console.log(result);
        }
   })
   } catch (err){

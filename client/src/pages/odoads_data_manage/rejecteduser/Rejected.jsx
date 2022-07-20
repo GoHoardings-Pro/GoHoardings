@@ -7,14 +7,9 @@ import SideBar from "../../../Components/Navbar/Sidebar";
 const Rejected = () => {
 
   const [posts, setPosts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerpage] = useState(10);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [postPerpage] = useState(10);
 
-  useEffect(async () => {
-    const { data } = await axios.get("http://localhost:8080/api/v1/syncMedia/rejects")
-    setPosts(data);
-    console.log(data);
-  }, [])
 
   //Get Current Posts (Pagination)
   // const indexOfLastPost = currentPage * postPerpage;
@@ -122,6 +117,16 @@ const Rejected = () => {
     })
   }
 
+  useEffect(() => {
+    const fetchData = async()=>{
+      const { data } = await axios.get("/api/v1/syncMedia/rejects")
+      setPosts(data);
+      console.log(data);
+    };
+    
+    fetchData();
+  }, [setPosts])
+
 
   return (
     <>
@@ -132,7 +137,7 @@ const Rejected = () => {
         </div>
         <div className="container-pages">
           <div>
-            {posts && <center>
+            <center>
               {/* making User tabel */}
               <table className="table p-1 m-1">
                 <thead>
@@ -149,7 +154,7 @@ const Rejected = () => {
                 </thead>
                 <tbody>
                   {/* putting data on table by map function */}
-                  { posts.map((pos, index) => (
+                  {posts.length>0 && posts.map((pos, index) => (
                     <tr key={pos.id}>
                       <td>{index + 1}</td>
                       <td style={{width:'20%'}}><img src={pos.thumbnail} alt="" style={{width:'30%'}} /></td>
@@ -217,7 +222,7 @@ const Rejected = () => {
               </table>
          
           
-            </center>}
+            </center>
           </div>
         </div>
       </div>
