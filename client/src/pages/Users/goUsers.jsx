@@ -10,7 +10,6 @@ import SideBar from "../../Components/Navbar/Sidebar";
 import { Pagination } from "antd"
 // import {Multiselect} from 'multiselect-react-dropdown'
 import Switch from "react-switch"
-
 import './goUsers.css'
 
 
@@ -34,9 +33,9 @@ const GoUser = () => {
   
   useEffect(() => {
     const fetchPost = async () => {
-      const res = await Axios.get("/api/v1/users/goUsers")
-      setPosts(res.data.data)
-      setTotal(res.data.data.length)
+      const {data} = await Axios.get("/api/v1/users/goUsers")
+      setPosts(data.data)
+      setTotal(data.data.length)
     };
     fetchPost();
     
@@ -64,7 +63,9 @@ const GoUser = () => {
   const indexOfFirstPage = indexOfLastPage - postPerpage;
   const currentPosts =  posts.slice(indexOfFirstPage, indexOfLastPage);
 
-  console.log(currentPosts.length>0);
+  const onShowSizeChange = (current, pageSize) => {
+    setPostPerPage(pageSize)
+  }
 
 
   const itemRender = ( current,type, originalElement) => {
@@ -78,20 +79,16 @@ const GoUser = () => {
   }
 
   const handel = async(id) => {
-    console.log(id);
-    const {data} = Axios.post("/api/v1/users/goUsers", {id:id})
-    console.log(data);
-    // setPosts(data)
+    const {data} = await Axios.post("/api/v1/users/goUsers", {id:id})
+    setPosts(data)
     }
 
 
   return (
-    <>
       <div className="containers">
         <div className="container-sidebar">
           <SideBar />
         </div>
-
         <div className="container-pages">
           <div className="page-title">
             <h4>CLIENT</h4>
@@ -109,7 +106,8 @@ const GoUser = () => {
               <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
             </div>
           </div>
-          <table className="table">
+        <div>
+          <table className="table table-bordered">
             <thead className="thead-darK">
               <tr>
                 <th scope="col">S.NO</th>
@@ -123,7 +121,7 @@ const GoUser = () => {
             </thead>
             <tbody>
              
-              {currentPosts.length >0 && currentPosts.filter(obj => {
+              { currentPosts.filter(obj => {
                 if (query == '') {
                   return obj;
                 } else if (obj.firstname.toLowerCase().includes(query.toLowerCase()) || obj.email.toLowerCase().includes(query.toLowerCase())) {
@@ -148,8 +146,8 @@ const GoUser = () => {
                           <div >
 
                             <div className="dataModal">
-                              <table className="table  p-2 ">
-                                <thead >
+                            <table className="table table-boarder table-hover table-striped m-3 table-sm">
+                    <thead className="thead-dark">
                                   <tr>
                                     <th scope="col">S.No</th>
                                     <th scope="col">Campaign Name</th>
@@ -181,25 +179,15 @@ const GoUser = () => {
                             <div className="noDataModal">
                               <span><i class="fa-solid fa-triangle-exclamation"></i>NoData</span>
                             </div>
-                       
                           </>
                         }
                       </td>  : null }
-
-                     
-                
-
                   </tr>
-
-
-
                 </>
               ))}
             </tbody>
           </table>
-
-
-
+          </div>
           <div className="conatainer-page-bottom">
             <div className="details">
               <span> Showing {page * postPerpage - postPerpage + 1} to {page * postPerpage} of {total} entries</span>
@@ -212,15 +200,13 @@ const GoUser = () => {
                 current={page}
                 showSizeChanger
                 showQuickJumper
-                
+                onShowSizeChange={onShowSizeChange}
                 itemRender={itemRender}
               />
             </div>
           </div>
         </div>
       </div>
-    </>
-
   )
 };
 export default GoUser;
