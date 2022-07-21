@@ -224,29 +224,30 @@ const Media = () => {
                         </div>
                         <div className="permissionRole" ref={mediaFormRef}>
                             <form className="form" >
-                                <div class="form-group form-group-media" >
+                                <div>
                                     <label for="exampleFormControlInput1">Media Code :</label>
                                     <input type="text" id="search" name="mediaCode" placeholder="media code .." onChange={(e) => changeHandler(e, "form1")} autoFocus/>
                                 </div>
                                 <input type="submit" value={"Search"}  />
                             </form>
                         </div>
-                        <div className="newRole userProfileHidden" ref={mediaCompanyFormRef}>
+                        <div className="permissionRole userProfileHidden" ref={mediaCompanyFormRef}>
                             <form className="form">
-                                <div class="form-group form-group-media" >
-                                    <label for="exampleFormControlInput1">mediaCompany :</label>
+                                <div>
+                                    <label for="exampleFormControlInput1">Media Company :</label>
                                     <input type="text" id="search" name="mediaCompany" placeholder="mediaCompany" onChange={(e) => changeHandler(e, "form1")} autoFocus/>
                                 </div>
+                     
                                 <input type="submit" value={"Search"} />
                             </form>
                         </div>
-                        <div className="newRole userProfileHidden" ref={otherFormRef}>
+                        <div className="permissionRole userProfileHidden" ref={otherFormRef}>
                             <form className="form">
-                                <div className="form-group" >
+                                <div className='otherform'>
                                     <label>Media Category:</label>
                                     <Select options={MediaOption} />
                                 </div>
-                                <div className="form-group" >
+                                <div className='otherform'>
                                     <label>Media Subcategory:</label>
                                     <Select
                                         // onChange={changeHandler}
@@ -256,7 +257,7 @@ const Media = () => {
                                         className="basic-multi-select"
                                         classNamePrefix="select" />
                                 </div>
-                                <div className="form-group" >
+                                <div className='otherform'>
                                     <label>City:</label>
                                     <Select
                                         options={City}
@@ -266,18 +267,18 @@ const Media = () => {
                                     />
                                     {/* <input type="text" id='search' name="city" onChange={changeHandler}   placeholder="City ...." /> */}
                                 </div>
-                                <div className="form-group" >
+                                <div className='otherform'>
                                 <label>Location:</label>
                                 <Select type="text" className="all" name="location" onChange={changeHandler} ></Select>
                                 </div>
-                                <div className="form-group" >
+                                <div className='otherform'>
                                     <label for='type'>Illimination Type:</label>
                                     <Select name="type" id="type" onChange={changeHandler}  >
                                         <option value={'lit'}>lit</option>
                                         <option value={'non-lit'}>Non - lit</option>
                                     </Select>
                                 </div>
-                                <input type="submit" value={"Search"}  />
+                                <input type="submit" value={"Search"}  style={{margin:'auto 0px 20px 0'}}/>
                             </form>
                         </div>
                     </div>
