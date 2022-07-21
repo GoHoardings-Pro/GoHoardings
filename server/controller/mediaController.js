@@ -3,6 +3,9 @@ const db = require("../conn/conn");
 
 exports.inventory = async(req,res) => {
     console.log(req.body);
+
+
+    
     db.changeUser({ database: "gohoardi_goh" });
     (code = req.body.code),
       (city = req.body.city),

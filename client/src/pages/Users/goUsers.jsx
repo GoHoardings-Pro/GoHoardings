@@ -79,9 +79,9 @@ const GoUser = () => {
 
   const handel = async(id) => {
     console.log(id);
-    const {data} = Axios.post("/api/v1/users/goUsers", {id:id})
+    const {data} = await Axios.post("/api/v1/users/goUsers", {id:id})
     console.log(data);
-    // setPosts(data)
+    setPosts(data)
     }
 
 

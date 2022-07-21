@@ -179,8 +179,8 @@ const Permission = () => {
 
                 <div>
                     <form onSubmit={updateRole}>
-                        <table className="table">
-                            <thead>
+                        <table className="table table-boarder table-hover table-striped m-3 table-sm">
+                            <thead className="table table-alert">
                                 <tr>
                                     <th>ID</th>
                                     <th>Permissionid</th>

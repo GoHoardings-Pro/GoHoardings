@@ -24,8 +24,6 @@ const options = ["None", "Airport LED", "Airport Media", "Auto Advertising", "Ba
 const Media = () => {
 
     const [code, setCode] = useState("");
-    const [city, setCity] = useState("");
-    const [location, setLocation] = useState("");
     const [category, setCategory] = useState([]);
     const [subcategory, setSubcategory] = useState("");
     const [illumination, setIllumination] = useState("");
@@ -33,33 +31,60 @@ const Media = () => {
     const [getCity, setgetcity] = useState([]);
     const [getcomp, setcomp] = useState([]);
     const [Users, fetchUsers] = useState([]);
-    // const [cityname, setcityname] = useState([])
-    // const [compname, setcompname] = useState([])
-    // const [state, setState] = useState(false);
-    const [formData, setFormData] = useState({});
+    
+    
+    const [other, setOther] = useState([]);
+    const [media, setMedia] = useState([]);
+    const [city, setCity] = useState([]);
+    const [location, setLocation] = useState([]);
+    const [ill, setIll] = useState([]);
+    
+    const [formData, setFormData] = useState({ });
 
+    const [data,setData] = useState({
+        other:'',
+        mediaCategory:'',
+        city:'',
+        location:'',
+        illumination:''
+    })
 
+    const changeHandler = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+        }
 
+    const dataChange = (values,e)=>{
+        let value = values.value
+        switch (e.name) {
+            case "mediaCategory":
+                setMedia(values)
+                console.log('dd');
+                break;
+            case "city":
+                setCity(values)
+                console.log('city');
+                 break;   
+                
+            case "location":
+                setLocation(values)
+                console.log('location');
+                 break;   
+            case "type":
+                setIll(values)
+                console.log('ill');
+                 break;   
+            default:
+                break;
+        }
+       
+        setData({ ...data, [e.name]: value})
+        console.log(data);
+    }
 
-
-    const ShowDetails = async () => {
-        const requestOptions = {
-            body: JSON.stringify({
-                code: code,
-                city: city,
-                location: location,
-                category: category,
-                subcategory: subcategory,
-                illumination: illumination,
-                company: company,
-            }),
-        };
-        const { data } = await axios.post('/api/v1/media/inventory', requestOptions)
-
-        fetchUsers(data)
-        // console.log(data);
-
-    };
+    const otherChangeHandler =(value)=>{
+        setOther(value)
+    }
+ 
 
     const Showcity = async () => {
         const { data } = await axios.get(`/api/v1/media/city`)
@@ -100,37 +125,21 @@ const Media = () => {
             label: "office-media", value: "office-media"
         }
     ]
-    // const MediaOption = ['traditional-ooh-media',"digital-media","transit-media","mall-media","airport-media","inflight_media","office-media"]
-
-
-
+    let locationOption = [
+        { label: "Delhi", value: "Delhi" },
+        {
+            label: "Noida", value: "Noida"
+        }, {
+            label: "Bihar", value: "Bihar"
+        }
+    ]
+    let optionType = [{ label: 'Lit', value: 'Lit' }, { label: 'Non-Lit', value: 'Non-Lit' }]
 
     useEffect(() => {
         Showcity();
         ShowCompany();
     }, []);
 
-
-    // const form1Ref = useRef(null);
-    // const form2Ref = useRef(null);
-
-
-    const changeHandler = (e, tab) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
-    // useEffect(() => {
-    //     if (formData?.mediaCode || formData?.mediaCompanyName) {
-    //         form2Ref.current.classList.add('formHide2')
-    //     } else {
-    //         form2Ref.current.classList.remove('formHide2')
-    //     }
-
-    //     if (formData?.mediaCategory || formData?.city || formData?.location || formData?.subcategory || formData?.type) {
-    //         form1Ref.current.classList.add('formHide')
-    //     } else {
-    //         form1Ref.current.classList.remove('formHide')
-    //     }
-    // }, [formData, city])
 
     const clickHandler = (form) => {
 
@@ -141,20 +150,21 @@ const Media = () => {
     const submithandler = (e) => {
         e.preventDefault();
         console.log(formData);
+
     }
+
+
+
     const mediaRef = useRef(null);
     const mediaCompanyRef = useRef(null);
     const otherRef = useRef(null);
-
 
     const mediaFormRef = useRef(null);
     const mediaCompanyFormRef = useRef(null);
     const otherFormRef = useRef(null);
 
-
     const switchTab = (e, tab) => {
-        console.log(tab);
-
+    
         if (tab === 'media') {
             mediaFormRef.current.classList.remove('userProfileHidden')
             mediaCompanyFormRef.current.classList.add('userProfileHidden')
@@ -163,12 +173,9 @@ const Media = () => {
             mediaRef.current.classList.add('navActive')
             mediaCompanyRef.current.classList.remove('navActive')
             otherRef.current.classList.remove('navActive')
-
-
-
         }
 
-        if (tab === 'mediaCompany') {
+        if (tab === 'company') {
             mediaFormRef.current.classList.add('userProfileHidden')
             mediaCompanyFormRef.current.classList.remove('userProfileHidden')
             otherFormRef.current.classList.add('userProfileHidden')
@@ -176,8 +183,6 @@ const Media = () => {
             mediaRef.current.classList.remove('navActive')
             mediaCompanyRef.current.classList.add('navActive')
             otherRef.current.classList.remove('navActive')
-
-
         }
         if (tab === 'other') {
             mediaFormRef.current.classList.add('userProfileHidden')
@@ -187,15 +192,107 @@ const Media = () => {
             mediaRef.current.classList.remove('navActive')
             mediaCompanyRef.current.classList.remove('navActive')
             otherRef.current.classList.add('navActive')
-
-
         }
-
-
-
     }
 
+  
 
+    
+    
+    const form1Ref = useRef(null);
+    const form2Ref = useRef(null);
+   
+    
+    const btn1Ref = useRef(null);
+    const btn2Ref = useRef(null);
+    const btn3Ref = useRef(null);
+
+
+    
+
+    const [isSearch, setIsSearch] = useState(false);
+    // console.log(isSearch);
+  
+    useEffect(() => {
+        if (formData?.mediaCode ) {
+            form2Ref.current.disabled = true
+            setIsSearch(true)
+            btn2Ref.current.disabled = true
+            btn3Ref.current.disabled = true
+        } else {
+            setIsSearch(false)
+            form2Ref.current.disabled = false;
+            btn2Ref.current.disabled = false
+            btn3Ref.current.disabled = false
+        }
+      
+    }, [formData?.mediaCode])
+
+    useEffect(() => {
+        
+        if(formData?.company){
+            setIsSearch(true)
+            form1Ref.current.disabled = true;
+            btn1Ref.current.disabled = true
+            btn3Ref.current.disabled = true
+        } else {
+            setIsSearch(false)
+            form1Ref.current.disabled = false;
+            btn1Ref.current.disabled = false
+            btn3Ref.current.disabled = false
+        }
+
+    }, [formData?.company])
+
+    useEffect(() => {
+
+        
+        if (data?.mediaCategory || data?.city || data?.location || data?.other || data?.illumination) {
+            form1Ref.current.disabled = true;
+            form2Ref.current.disabled = true;
+            btn2Ref.current.disabled = true
+            btn1Ref.current.disabled = true
+        } else{
+            form1Ref.current.disabled = false;
+            form2Ref.current.disabled = false;
+
+            btn2Ref.current.disabled = false
+            btn1Ref.current.disabled = false
+
+        }
+       
+    }, [data])
+
+    const ShowDetails = async (detail) => {
+        console.log(detail);
+        console.log('function');
+        
+        const { data } = await axios.post('/api/v1/media/inventory', detail)
+
+        fetchUsers(data)
+        console.log(data);
+
+        console.log(Users)
+
+    };
+    
+    const submitHandler = (e) => {
+        e.preventDefault()
+        if(formData?.mediaCode){
+            console.log(formData);
+            ShowDetails(formData)
+        }
+        if(formData?.company){
+            console.log(formData);
+            ShowDetails(formData)
+            
+            
+        }
+        if (data?.mediaCategory || data?.city || data?.location || data?.other || data?.illumination) {
+            console.log(data);
+            ShowDetails(data)
+        }
+    }
 
     return (
         <>
@@ -213,7 +310,7 @@ const Media = () => {
                             <div className="existUser navActive" ref={mediaRef} onClick={(e) => switchTab(e, 'media')}>
                                 <strong>Media Code</strong>
                             </div>
-                            <div className="newPermission " ref={mediaCompanyRef} onClick={(e) => switchTab(e, 'mediaCompany')}>
+                            <div className="newPermission " ref={mediaCompanyRef} onClick={(e) => switchTab(e, 'company')}>
                                 <strong>Media Company Name</strong>
 
                             </div>
@@ -223,73 +320,88 @@ const Media = () => {
                             </div>
                         </div>
                         <div className="permissionRole" ref={mediaFormRef}>
-                            <form className="form" >
-                                <div>
-                                    <label for="exampleFormControlInput1">Media Code :</label>
-                                    <input type="text" id="search" name="mediaCode" placeholder="media code .." onChange={(e) => changeHandler(e, "form1")} autoFocus/>
+                            <form className="form" onSubmit={submitHandler}>
+                                <div >
+                                    <label for="search">Media Code :</label>
+                                    <input  type="text" id="search" name="mediaCode" placeholder="media code .." onChange={changeHandler} autoFocus ref={form1Ref} required />
                                 </div>
-                                <input type="submit" value={"Search"}  />
+                                <input type="submit" value={"Search"} ref={btn1Ref}/>
                             </form>
                         </div>
                         <div className="permissionRole userProfileHidden" ref={mediaCompanyFormRef}>
-                            <form className="form">
+                            <form className="form" onSubmit={submitHandler}>
                                 <div>
                                     <label for="exampleFormControlInput1">Media Company :</label>
-                                    <input type="text" id="search" name="mediaCompany" placeholder="mediaCompany" onChange={(e) => changeHandler(e, "form1")} autoFocus/>
+                                    <input type="text" id="search" name="company" placeholder="mediaCompany" onChange={changeHandler} autoFocus ref={form2Ref} required/>
                                 </div>
-                     
-                                <input type="submit" value={"Search"} />
+
+                                <input type="submit" value={"Search"} ref={btn2Ref}/>
                             </form>
                         </div>
                         <div className="permissionRole userProfileHidden" ref={otherFormRef}>
-                            <form className="form">
+                            <form className="form" onSubmit={submitHandler}>
                                 <div className='otherform'>
                                     <label>Media Category:</label>
-                                    <Select options={MediaOption} />
+                                    <Select
+                                    isDisabled={isSearch} options={MediaOption} name={'mediaCategory'} value={media} onChange={dataChange}  required/>
                                 </div>
                                 <div className='otherform'>
                                     <label>Media Subcategory:</label>
                                     <Select
-                                        // onChange={changeHandler}
+                                    isDisabled={isSearch}
+                                        value={other}
+                                        onChange={otherChangeHandler}
                                         isMulti
-                                        name="colors"
+                                        name="mediaSubcategories"
                                         options={Comp}
                                         className="basic-multi-select"
-                                        classNamePrefix="select" />
+                                        classNamePrefix="select" 
+                                        
+                                        />
                                 </div>
                                 <div className='otherform'>
                                     <label>City:</label>
                                     <Select
+                                    isDisabled={isSearch}
+                                        value={city}
+                                        onChange={dataChange}
                                         options={City}
-                                        displayValue="value"
-                                    // onSelect={setCity}
-
+                                        name="city"
+                                       
                                     />
-                                    {/* <input type="text" id='search' name="city" onChange={changeHandler}   placeholder="City ...." /> */}
                                 </div>
                                 <div className='otherform'>
-                                <label>Location:</label>
-                                <Select type="text" className="all" name="location" onChange={changeHandler} ></Select>
+                                    <label>Location:</label>
+                                    <Select
+                                    isDisabled={isSearch} 
+                                        value={location}
+                                         options={locationOption}
+                                          name="location"
+                                           onChange={dataChange}
+                                          
+                                     />
                                 </div>
                                 <div className='otherform'>
                                     <label for='type'>Illimination Type:</label>
-                                    <Select name="type" id="type" onChange={changeHandler}  >
-                                        <option value={'lit'}>lit</option>
-                                        <option value={'non-lit'}>Non - lit</option>
-                                    </Select>
+                                    <Select
+                                    isDisabled={isSearch} 
+                                    name="illumination" 
+                                    id="type" 
+                                    options={optionType} 
+                                    onChange={dataChange} 
+                                    value={ill} 
+                                   
+                               
+                                />
                                 </div>
-                                <input type="submit" value={"Search"}  style={{margin:'auto 0px 20px 0'}}/>
+                                <input type="submit" value={"Search"} style={{ margin: 'auto 0px 20px 0' }} ref={btn3Ref}/>
                             </form>
                         </div>
                     </div>
 
-
-
-
-
                     <section className="media-result mt-4">
-                        <table className="table" style={{ color: 'white', background: 'tomato' }}>
-                            <thead>
+                        <table className="table" >
+                            <thead style={{ color: 'white', background: 'tomato' }}>
                                 <tr>
                                     <th scope="col">S.NO</th>
                                     <th scope="col">Name</th>
@@ -300,6 +412,31 @@ const Media = () => {
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                        {
+                          Users.res.map((obj,i) => (
+
+                                  
+                                  <tr key={i}>
+                                  <td> <input type="checkbox" className="form-check-input" mediacode={obj.code} mediacategory={obj.category_name} checked={obj?.isChecked || false}/></td>
+                                  <td><img src={obj.thumb}  style={{height: "100px",width: "100px"}}/></td>
+                                  <td>{obj.location}</td>
+                                  <td>{obj.city_name}</td>
+                                  <td>
+                                  {obj.phonenumber}{<br/>}
+                                  {obj.email}{<br/>}
+                                  {obj.location}
+                                  </td>
+                                  <td>{obj.category_name}</td>
+                                  <td>{obj.subcategory}</td>
+                                  <td>{obj.illumination}</td>
+                                  <td className="numeric">{obj.price_2}</td>
+                                  </tr>
+                                  
+                          ))
+    
+                        }
+                        </tbody>
                         </table>
                     </section>
                 </div>

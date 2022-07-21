@@ -27,11 +27,11 @@
     min-width: 20vw;
     width: 20%;
 }
-
+/* 
 .form>.otherform>div{
     
-    /* box-shadow: 0 3px 6px 1px #042d4657; */
-}
+    box-shadow: 0 3px 6px 1px #042d4657;
+} */
 .form>.otherform>div>div{
     padding: 7px 10px;
 }
@@ -41,3 +41,6 @@
     height: 30px;
 }
 
+.formHide2{
+    background: red;
+}
