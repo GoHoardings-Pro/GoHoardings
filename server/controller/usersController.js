@@ -19,57 +19,53 @@ exports.goUsers = async(req, res) => {
 
 exports.odoUsers = async(req, res) => {
   db.changeUser({ database: "odoads_tblcompanies" }); 
-  const promises = [];
-  db.query("SELECT id,name,code,contact_email, contact_phone, created FROM tblcompanies Where db_created = 'txst'", async (err, result) => {
-    if (err) throw err;
+  let promises = [];
+  db.query("SELECT id,name, code, contact_email, contact_phone, created , status,email_verification_key FROM tblcompanies Where db_created = 'txst' ", async (err, result) => {
+    if (err) {
+      res.send(err)
+    } else {
     result.forEach((element) => {
       promises.push(new Promise((resolve, reject) => {
-   db.changeUser({ database: "odoads_" + element.code});
-  db.query("SELECT count(syncstatus) AS 'unsynced' FROM tblmedia_deails WHERE  syncstatus='unsynced' ", async (err,result) => {
+  db.changeUser({ database: "odoads_" + element.code});
+  db.query("SELECT count(syncstatus) AS 'unsynced' FROM tblmedia_deails WHERE  syncstatus='unsynced' ", async (err,unsynced) => {
     if (err) {
       res.send(reject)
     }
-  
   db.query("SELECT count(syncstatus) AS 'updated' FROM tblmedia_deails WHERE syncstatus='updated' ", async (err, updated) => {
     if (err){
       res.send(reject)
     }
-    // resolve(updated)
-    db.query("SELECT count(syncstatus) AS 'synced' FROM tblmedia_deails WHERE syncstatus='synced' ", async (err, synced) => {
+    db.query("SELECT count(syncstatus) AS 'synced' FROM tblmedia_deails WHERE syncstatus='synced' ", async (err, syncstatus) => {
       if (err){
         res.send(reject)
       }
-     
-    result.forEach(element2 => {
+      syncstatus.forEach(element2 => {
       element2['id'] = element.id
       element2['name'] = element.name;
       element2['code'] = element.code;
-      element2['email'] = element.contact_email;
-      element2['phone'] = element.contact_phone;
-      element2['date'] = element.created;
+      element2['contact_email'] = element.contact_email;
+      element2['contact_phone'] = element.contact_phone;
+      element2['created'] = element.created;
       element2['updated'] = updated[0]
-      element2['synced'] = synced[0]
+      element2['unsynced'] = unsynced[0]
     })
-
-  
-    resolve(result);
+    resolve(syncstatus);
     })
-    
   })
- 
   })
       }))
   })
+}
   try{
     const result = await Promise.allSettled(promises)
     let test = [];
-    result.forEach(element => {
-      element.value.forEach(obj => {
+    result.forEach((element) => {
+      element.value.forEach((obj) => {
         test.push(obj);
       });
     });
     // Return the result
-    res.json(test);
+    return res.send(test);
   }catch (err){
     return err;
   }
@@ -150,39 +146,61 @@ try {
 })
 }
   
-
-
 exports.odoSwitchToggle = async(req,res) => {
-   let toggle = req.body.id
-   console.log(toggle);
-  db.changeUser({database : "odoads_tblcompanies"})
-  db.query("SELECT * from tblcompanies WHERE id = "+toggle+" ", async (err, result) => {
-      if (err) throw err;
-      let toggleValue = result[0].status
-      if (toggleValue == 0){
-          db.query("UPDATE tblcompanies SET status = 1 WHERE id = "+toggle+"", async(err,result) => {
-              if (err) throw err;
-              db.query('SELECT * FROM tblcompanies', async (err, result) => {
-                  if (err) throw err;
-                  return res.send(result);
-                });
-          })
-      } else {
-          db.query('UPDATE tblcompanies SET status = 0 WHERE id = '+toggle+'', async (err, result) => {
-            if (err) throw err;
-            db.query('SELECT * FROM tblcompanies', async (err, result) => {
-              if (err) throw err;
-              return res.send(result);
-            });
-          });
-        }
-      
-  })
+  db.changeUser({ database: "odoads_tblcompanies" }); 
+  try{
+    const {id} = req.body  
+    id  ?  db.query("SELECT * from tblcompanies WHERE id = "+id+" && db_created = 'txst' ", (err, result) => {
+         if (err){
+             res.send({"err": err,message :"User Not Created Check Manually"})
+           } 
+         const toggleValue = result[0].status
+         if (toggleValue == 0){
+             db.query("UPDATE tblcompanies SET status = 1 WHERE id = "+id+" && db_created = 'txst'", (err,result) => {
+                 if (err){
+                     res.send({"err": err,message :"User Not Created Check Manually"})
+                   }else if (result == []){
+                     return res.send({false: `No Data Found on DataBase`})
+                  }
+                 db.query("SELECT * FROM tblcompanies WHERE db_created = 'txst'", async (err, result) => {
+                     if (err){
+                         res.send({"err": err,message :"User Not Created Check Manually"})
+                       }else if (result == []){
+                         return res.send({false: `No Data Found on DataBase`})
+                      } else {
+                         return res.send(result)
+                      }
+                   });
+             })
+         } else {
+             db.query('UPDATE tblcompanies SET status = 0 WHERE id = '+id+' && db_created = "txst"', async (err, result) => {
+                 if (err){
+                     res.send({"err": err,message :"User Not Created Check Manually"})
+                   }else if (result == []){
+                     return res.send({false: `No Data Found on DataBase`})
+                  } 
+               db.query("SELECT * FROM tblcompanies WHERE db_created = 'txst'", async (err, result) => {
+                 if (err){
+                     res.send({"err": err,message :"User Not Created Check Manually"})
+                   }else if (result == []){
+                     return res.send({false: `No Data Found on DataBase`})
+                  } else {
+                     return res.send(result)
+                  }
+               });
+             });
+           }
+     })
+ :      res.send({message:"User data Null"})     
+ } catch (err){
+         res.status(404).json({
+           messsage:err.res
+         })
+     }
 }
 
 exports.goUserSwitchToggle = async(req,res) =>{
   const toggle = req.body.id
-  console.log(toggle);
 
   db.changeUser({database : "odoads_tblcompanies"})
 

@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Pagination from "../../../helpingFiles/Pagination/Pajination";
+import { Pagination } from "antd"
 import "bootstrap/dist/css/bootstrap.min.css";
 import SideBar from "../../../Components/Navbar/Sidebar";
 
 const Accept = () => {
 
   const [posts, setPosts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postPerpage] = useState(10);
+  const [total, setTotal] = useState("")
+  const [page, setPage] = useState(1)
+  const [postPerpage, setPostPerPage] = useState(10)
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fatchData = async () => {
       const { data } = await axios.get("http://localhost:8080/api/v1/syncMedia/accepts")
       setPosts(data);
-
+      setTotal(data);
+console.log(data);
     };
     fatchData();
   }, [setPosts])
@@ -127,10 +130,25 @@ const Accept = () => {
   }
 
 
-  const indexOfLastPost = currentPage * postPerpage;
-  const indexOfFirstPost = indexOfLastPost - postPerpage;
-  const currentPosts =posts.length>0 && posts.slice(indexOfFirstPost, indexOfLastPost);
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const indexOfLastPage = page * postPerpage;
+  const indexOfFirstPage = indexOfLastPage - postPerpage;
+  const currentPosts = posts.slice(indexOfFirstPage, indexOfLastPage);
+
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPostPerPage(pageSize)
+  }
+
+  const itemRender = (current, type, originalElement) => {
+    if (type === "prev") {
+      return <a>Previous</a>
+    }
+    if (type === "next") {
+      return <a>Next</a>
+    }
+    return originalElement
+  }
+
 
   return (
     <>         {posts &&
@@ -141,27 +159,37 @@ const Accept = () => {
             <SideBar />
           </div>
           <div className="container-pages">
+          <div className="search-input">
+              <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+            </div>
             <center>
               {/* making User tabel */}
-              <table className="table p-1 m-1">
-                <thead>
+              <table className="table table-boarder table-hover table-striped m-3 table-sm">
+                    <thead className="thead-dark">
                   <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Image</th>
                     <th scope="col">Media Code</th>
                     <th scope="col">Media Name</th>
                     <th scope="col">Status</th>
+                    <th scope="col">clientCode</th>
                     <th scope="col">Created Date</th>
-                    <th scope="col">clientCode Date</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {/* putting data on table by map function */}
-                  {currentPosts.length>0 && currentPosts.map((pos, index) => (
+                  { currentPosts.filter(obj => {
+                if (query == '') {
+                  return obj;
+                } else if (obj.code.toLowerCase().includes(query.toLowerCase()) || obj.medianame.toLowerCase().includes(query.toLowerCase()) 
+                || obj.syncstatus.toLowerCase().includes(query.toLowerCase()) || obj.clientCode.toLowerCase().includes(query.toLowerCase()) ) {
+                  return obj;
+                }
+              }).map((pos, index) => (
                     <tr key={pos.id}>
                       <td>{index + 1}</td>
-                      <td>{posts.thumbnail}</td>
+                      <td style={{width:'20%'}} ><img src={pos.thumbnail || "No Image Found"} alt={pos.medianame} style={{width:'50%'}}  /> </td>
                       <td>{pos.code}</td>
                       <td>{pos.medianame}</td>
                       <td>{pos.syncstatus}</td>
@@ -232,6 +260,19 @@ const Accept = () => {
 
           </div>
         </div>
+        <div className="pagination">
+                <Pagination
+                  onChange={(value) => setPage(value)}
+                  pageSize={postPerpage}
+                  total={total}
+                  current={page}
+                  showSizeChanger
+                  showQuickJumper
+                  onShowSizeChange={onShowSizeChange}
+                  itemRender={itemRender}
+
+                />
+              </div>
       </div>
     }
     </>

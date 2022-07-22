@@ -400,8 +400,8 @@ const Media = () => {
                     </div>
 
                     <section className="media-result mt-4">
-                        <table className="table" >
-                            <thead style={{ color: 'white', background: 'tomato' }}>
+                         <table className="table table-boarder table-hover table-striped m-3 table-sm">
+                    <thead className="thead-dark">
                                 <tr>
                                     <th scope="col">S.NO</th>
                                     <th scope="col">Name</th>

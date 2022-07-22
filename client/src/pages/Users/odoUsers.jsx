@@ -1,47 +1,37 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit';
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
-import PaginationFactory from "react-bootstrap-table2-paginator";
-import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-import filterFactory from "react-bootstrap-table2-filter";
-import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
-import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-import { MultiSelect } from "react-multi-select-component";
 import SideBar from "../../Components/Navbar/Sidebar";
 import Switch from "react-switch"
 import { Pagination } from "antd"
 import Axios from "axios"
 
-
 const Odousers = () => {
-
   const [posts, setPosts] = useState([]);
   const [total, setTotal] = useState("")
   const [page, setPage] = useState(1)
   const [postPerpage, setPostPerPage] = useState(10)
   const [query, setQuery] = useState("")
 
+ 
 
+
+  const fetchPost = async () => {
+    const {data} = await Axios.get("/api/v1/users/odoUsers")
+    setPosts(data)
+    setTotal(data.length)
+  };
+console.log(posts);
   useEffect(() => {
-    const fetchPost = async () => {
-      const res = await Axios.get("/api/v1/users/odoUsers")
-      setPosts(res.data)
-      setTotal(res.data.length)
-
-    };
+    
     fetchPost();
   }, []);
 
 
 
-  const handel = (id) => {
-    Axios.post("/api/v1/users/odoUsers", {
-      id: id
-    }).then((res) => {
-      setPosts(res.data)
-    })
+  const handel = async (id) => {
+    console.log(id);
+    const {data} = await Axios.post("/api/v1/users/odoUsers", {id:id})
+    setPosts(data)
   }
  
   const headers = [
@@ -51,9 +41,9 @@ const Odousers = () => {
     { key: "email", label: "Email" },
     { key: "contact_phone", label: "Phone" },
     { key: "created", label: "Date" },
+    // { key: "unsynced_media", label: "Unsynced_Media" },
     { key: "synced_media", label: "Synced_Media" },
-    { key: "unsynced_media", label: "Unsynced_Media" },
-    { key: "updates_media", label: "Updates_Media" },
+    // { key: "updates_media", label: "Updates_Media" },
     { key: "switch", label: "Toggle" },
   ]
 
@@ -79,7 +69,6 @@ const Odousers = () => {
 
 
   return (
-    <>
       <div className="containers">
 
         <div className="container-sidebar">
@@ -101,13 +90,10 @@ const Odousers = () => {
             </div>
 
           </div>
-          <div>
-
-          </div>
           <center>
             {/* making User tabel */}
-            <table className="table table-bordered">
-              <thead className="thead-dark ">
+            <table className="table table-boarder table-hover table-striped m-3 table-sm">
+                    <thead className="thead-dark">
                 <tr>
                   {headers.map((row) => {
                     return <td key={row.key}>{row.label}</td>
@@ -119,7 +105,7 @@ const Odousers = () => {
                 {currentPosts.filter(obj => {
                   if (query == '') {
                     return obj;
-                  } else if (obj.name.toLowerCase().includes(query.toLowerCase()) || obj.created.toLowerCase().includes(query.toLowerCase()) || obj.contact_email.toLowerCase().includes(query.toLowerCase())) {
+                  } else if (obj.name.toLowerCase().includes(query.toLowerCase()) || obj.code.toLowerCase().includes(query.toLowerCase())) {
                     return obj;
                   }
                 }).map((posts, index) => (
@@ -127,16 +113,16 @@ const Odousers = () => {
                     <td>{index + 1}</td>
                     <td>{posts.name}</td>
                     <td>{posts.code}</td>
-                    <td>{posts.email}</td>
-                    <td>{posts.phone}</td>
-                    <td>{posts.date}</td>
-                    <td>{posts.synced.synced}</td>
-                    <td>{posts.unsynced}</td>
-                    <td>{posts.updated.updated}</td>
+                    <td>{posts.contact_email}</td>
+                    <td>{posts.contact_phone}</td>
+                    <td>{posts.created}</td>
+                    {/* <td>  posts.unsynced.unsynced : "NoData" }</td> */}
+                    <td>{posts.synced}</td>
+                    {/* <td>   posts.updated.updated : "NoData" }</td> */}
                     <td>
                       <Switch
                         onChange={() => handel(posts.id)}
-                        checked={posts.status === 0 ? true : false}
+                        checked={posts.status == 0 }
                       />
 
                     </td>
@@ -168,9 +154,7 @@ const Odousers = () => {
             </div>
           </center>
         </div>
-      </div>
-    </>
-
+     </div>
   )
 };
 export default Odousers;
