@@ -413,7 +413,7 @@ const Media = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                        {
+                        {Users.length>0 &&
                           Users.res.map((obj,i) => (
 
                                   
