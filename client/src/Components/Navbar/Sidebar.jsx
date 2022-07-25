@@ -240,7 +240,8 @@ const SideBar = () => {
     {
       navGridItemIcon:<BsEnvelope/>,
     navGridItemtitle:"Message",
-    color:'green'
+    color:'green',
+    active:'notActive'
     },
     {
       navGridItemIcon:<FiUser/>,
@@ -251,7 +252,9 @@ const SideBar = () => {
     {
       navGridItemIcon:<RiCheckboxMultipleBlankLine/>,
     navGridItemtitle:"Project",
-    color:'green'
+    color:'green',
+    active:'notActive'
+
     },
     // {
     //   navGridItemIcon:<FiSettings/>,
@@ -287,12 +290,17 @@ const SideBar = () => {
         <div className="nav-items ">
             <ul>
               <li className='nav-item'><AiOutlineAlignRight onClick={toggle} /></li>
-              <li className='nav-item'><AiOutlineSearch /></li>
+              {/* <li className='nav-item'></li> */}
+              <form className="search">
+                <input type="text" placeholder="search" className="search__input" />
+                <button type="button" className="search__btn">
+                <i className="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </form>
             </ul>
             <ul>
-              <li className='nav-item nav-item-res'><BsArrowsFullscreen />
-                
-              </li>
+              {/* <li className='nav-item nav-item-res'><BsArrowsFullscreen /></li> */}
+             
               <li className='nav-item'><BsBell />
               <div className="nav-dropdown-container">
                   <div className="dropdown-header">
@@ -353,10 +361,11 @@ const SideBar = () => {
                   <ul>
                       {
                         navPeronalItem.map((list)=>(
-                         <li onClick={list.fun}>
+                        <li onClick={list.fun} className={list.active}>
                          <span style={{ color: list.color}}>{list.navGridItemIcon}</span>
                          <span>{list.navGridItemtitle}</span>
-                      </li>))
+                        </li>
+                      ))
                       }
                     </ul>
                   </div>
@@ -373,7 +382,7 @@ const SideBar = () => {
             width: isOpen ? "220px" : "45px",
             
             transition: {
-              duration: 1,
+              duration: .5,
               type: "spring",
               damping: 20,
             },
@@ -397,7 +406,7 @@ const SideBar = () => {
                   <SidebarMenu
                     setIsOpen={setIsOpen}
                     route={route}
-                    showAnimation={showAnimation}
+                    // showAnimation={showAnimation}
                     isOpen={isOpen}
                   />
                 );
@@ -414,7 +423,7 @@ const SideBar = () => {
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
-                        variants={showAnimation}
+                        // variants={showAnimation}
                         initial="hidden"
                         animate="show"
                         exit="hidden"

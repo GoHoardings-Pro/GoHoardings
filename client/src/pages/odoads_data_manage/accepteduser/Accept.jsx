@@ -149,9 +149,10 @@ console.log(data);
     return originalElement
   }
 
-
+console.log(posts);
   return (
-    <>         {posts &&
+    <>         
+    {posts &&
       <div>
         <div className="containers">
 
@@ -159,12 +160,31 @@ console.log(data);
             <SideBar />
           </div>
           <div className="container-pages">
+          <div className="page-title"><h2>UnSync</h2></div>
+          <div className="container-page-top">
+          <select class="custom-select" onChange={(e) => setPostPerPage(e.target.value)}>
+            <option selected value="10">10 / pages</option>
+            <option value="20">20 / pages</option>
+            <option value="30">30 / pages</option>
+            <option value="40">40 / pages</option>
+          </select>
+
+
+
           <div className="search-input">
-              <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+            <div class="search-box">
+              <input placeholder="Search..." onChange={event => setQuery(event.target.value)} />
+              <i className="fas fa-search icon"></i>
             </div>
-            <center>
+
+
+          </div>
+        </div>
+           
+            
+            <div>
               {/* making User tabel */}
-              <table className="table table-boarder table-hover table-striped m-3 table-sm">
+              <table className="table table-boarder table-hover table-striped  table-sm">
                     <thead className="thead-dark">
                   <tr>
                     <th scope="col">ID</th>
@@ -174,7 +194,8 @@ console.log(data);
                     <th scope="col">Status</th>
                     <th scope="col">clientCode</th>
                     <th scope="col">Created Date</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Action Reject</th>
+                    <th scope="col">Action Accept</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -189,12 +210,12 @@ console.log(data);
               }).map((pos, index) => (
                     <tr key={pos.id}>
                       <td>{index + 1}</td>
-                      <td style={{width:'20%'}} ><img src={pos.thumbnail || "No Image Found"} alt={pos.medianame} style={{width:'50%'}}  /> </td>
+                      <td style={{width:'20%'}} >{pos.thumbnail ? <img src={pos.thumbnail} alt={pos.medianame}  style={{width:'50%'}}  />: "No Image Found" } </td>
                       <td>{pos.code}</td>
                       <td>{pos.medianame}</td>
                       <td>{pos.syncstatus}</td>
                       <td>{pos.clientCode}</td>
-                      <td>{pos.created_date}</td>
+                      <td>{pos.created_date.slice(0,10)}</td>
                       <td><button onClick={(e) => updateStatus(pos.id, e)} className="button is-small is-danger">Reject</button></td>
                       <td>
                         <button
@@ -255,7 +276,7 @@ console.log(data);
               </table>
 
               {/* View of pagination */}
-            </center>
+            </div>
 
 
           </div>

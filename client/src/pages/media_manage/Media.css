@@ -23,16 +23,16 @@
     margin: auto 0px 38px 0;
     padding:.6rem 3rem;
 }
-.form> .otherform{
+.form> .subcategoryform{
     min-width: 20vw;
     width: 20%;
 }
 /* 
-.form>.otherform>div{
+.form>.subcategoryform>div{
     
     box-shadow: 0 3px 6px 1px #042d4657;
 } */
-.form>.otherform>div>div{
+.form>.subcategoryform>div>div{
     padding: 7px 10px;
 }
 .select__value-container{
@@ -43,4 +43,16 @@
 
 .formHide2{
     background: red;
+}
+.noData{
+    color: tomato;
+    border: inherit;
+  
+    outline: none;
+}
+.setData{
+    color: green;
+    border: inherit;
+  
+  
 }

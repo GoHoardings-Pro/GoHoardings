@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import BootstrapTable from 'react-bootstrap-table-next';
+import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit';
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
+import PaginationFactory from "react-bootstrap-table2-paginator";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+import filterFactory from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import Select from 'react-select'
@@ -22,18 +26,20 @@ const options = ["None", "Airport LED", "Airport Media", "Auto Advertising", "Ba
 
 
 const Media = () => {
-
-    const [code, setCode] = useState("");
-    const [category, setCategory] = useState([]);
-    const [subcategory, setSubcategory] = useState("");
-    const [illumination, setIllumination] = useState("");
-    const [company, setCompany] = useState("");
+    const { ExportCSVButton } = CSVExport;
+    // const [code, setCode] = useState("");
+    // const [category, setCategory] = useState([]);
+    // const [subcategory, setSubcategory] = useState("");
+    // const [illumination, setIllumination] = useState("");
+    // const [company, setCompany] = useState("");
     const [getCity, setgetcity] = useState([]);
     const [getcomp, setcomp] = useState([]);
     const [Users, fetchUsers] = useState([]);
+    // const [state, setState] = useState(false)
+
     
     
-    const [other, setOther] = useState([]);
+    const [subcategory, setsubcategory] = useState([]);
     const [media, setMedia] = useState([]);
     const [city, setCity] = useState([]);
     const [location, setLocation] = useState([]);
@@ -42,21 +48,25 @@ const Media = () => {
     const [formData, setFormData] = useState({ });
 
     const [data,setData] = useState({
-        other:'',
-        mediaCategory:'',
+        subcategory:'',
+        category:'',
         city:'',
         location:'',
         illumination:''
     })
 
+    const [noStateData,setStateData] = useState('noData')
+    console.log(noStateData);
     const changeHandler = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        setStateData('setData')
+
         }
 
     const dataChange = (values,e)=>{
         let value = values.value
         switch (e.name) {
-            case "mediaCategory":
+            case "category":
                 setMedia(values)
                 console.log('dd');
                 break;
@@ -78,11 +88,13 @@ const Media = () => {
         }
        
         setData({ ...data, [e.name]: value})
-        console.log(data);
+        // console.log(data);
+        setStateData('setData')
+       
     }
 
-    const otherChangeHandler =(value)=>{
-        setOther(value)
+    const subcategoryChangeHandler =(value)=>{
+        setsubcategory(value)
     }
  
 
@@ -157,41 +169,41 @@ const Media = () => {
 
     const mediaRef = useRef(null);
     const mediaCompanyRef = useRef(null);
-    const otherRef = useRef(null);
+    const subcategoryRef = useRef(null);
 
     const mediaFormRef = useRef(null);
     const mediaCompanyFormRef = useRef(null);
-    const otherFormRef = useRef(null);
+    const subcategoryFormRef = useRef(null);
 
     const switchTab = (e, tab) => {
     
         if (tab === 'media') {
             mediaFormRef.current.classList.remove('userProfileHidden')
             mediaCompanyFormRef.current.classList.add('userProfileHidden')
-            otherFormRef.current.classList.add('userProfileHidden')
+            subcategoryFormRef.current.classList.add('userProfileHidden')
 
             mediaRef.current.classList.add('navActive')
             mediaCompanyRef.current.classList.remove('navActive')
-            otherRef.current.classList.remove('navActive')
+            subcategoryRef.current.classList.remove('navActive')
         }
 
         if (tab === 'company') {
             mediaFormRef.current.classList.add('userProfileHidden')
             mediaCompanyFormRef.current.classList.remove('userProfileHidden')
-            otherFormRef.current.classList.add('userProfileHidden')
+            subcategoryFormRef.current.classList.add('userProfileHidden')
 
             mediaRef.current.classList.remove('navActive')
             mediaCompanyRef.current.classList.add('navActive')
-            otherRef.current.classList.remove('navActive')
+            subcategoryRef.current.classList.remove('navActive')
         }
-        if (tab === 'other') {
+        if (tab === 'subcategory') {
             mediaFormRef.current.classList.add('userProfileHidden')
             mediaCompanyFormRef.current.classList.add('userProfileHidden')
-            otherFormRef.current.classList.remove('userProfileHidden')
+            subcategoryFormRef.current.classList.remove('userProfileHidden')
 
             mediaRef.current.classList.remove('navActive')
             mediaCompanyRef.current.classList.remove('navActive')
-            otherRef.current.classList.add('navActive')
+            subcategoryRef.current.classList.add('navActive')
         }
     }
 
@@ -214,7 +226,7 @@ const Media = () => {
     // console.log(isSearch);
   
     useEffect(() => {
-        if (formData?.mediaCode ) {
+        if (formData?.code ) {
             form2Ref.current.disabled = true
             setIsSearch(true)
             btn2Ref.current.disabled = true
@@ -226,7 +238,7 @@ const Media = () => {
             btn3Ref.current.disabled = false
         }
       
-    }, [formData?.mediaCode])
+    }, [formData?.code])
 
     useEffect(() => {
         
@@ -247,7 +259,7 @@ const Media = () => {
     useEffect(() => {
 
         
-        if (data?.mediaCategory || data?.city || data?.location || data?.other || data?.illumination) {
+        if (data?.category || data?.city || data?.location || data?.subcategory || data?.illumination) {
             form1Ref.current.disabled = true;
             form2Ref.current.disabled = true;
             btn2Ref.current.disabled = true
@@ -278,7 +290,7 @@ const Media = () => {
     
     const submitHandler = (e) => {
         e.preventDefault()
-        if(formData?.mediaCode){
+        if(formData?.code){
             console.log(formData);
             ShowDetails(formData)
         }
@@ -288,12 +300,74 @@ const Media = () => {
             
             
         }
-        if (data?.mediaCategory || data?.city || data?.location || data?.other || data?.illumination) {
+        if (data?.category || data?.city || data?.location || data?.subcategory || data?.illumination) {
             console.log(data);
             ShowDetails(data)
         }
     }
 
+    const columns = [
+        { dataField: "code", text: "ID", },
+        { dataField: "thumb", formatter: imageFormatter, text: "Image" },
+        { dataField: "location", text: "Company", sort: true },
+        { dataField: "city_name", text: "City", sort: true },
+        { dataField: "phonenumber", text: "Phone", sort: true },
+        { dataField: "email", text: "Email", sort: true },
+        { dataField: "location", text: "Media", sort: true },
+        { dataField: "category_name", text: "Category", sort: true },
+        { dataField: "subcategory", text: "Subcategory", sort: true },
+        { dataField: "illumination", text: "Illumination", sort: true },
+        { dataField: "price", text: "Price", sort: true },
+    ];
+    function imageFormatter(cell) {
+        return <img src={cell} style={{ width: "100px", height: "100px" }} />;
+    }
+    // const handleOnSelectAll = (isSelect, rows) => {
+    //     const ids = rows.map(r => r.id);
+    //     if (isSelect == true) {
+    //         setState(() => ({
+    //             selected: ids
+    //         }));
+    //     } else {
+    //         return false
+    //     }
+    //     console.log(ids);
+    // }
+    
+    const selectRow = {
+        mode: 'checkbox',
+        clickToSelect: true,
+        // onSelect: abcd(handleOnSelect),
+        // onSelectAll: handleOnSelectAll
+    };
+
+    const pagintion = PaginationFactory({
+        page: 1,
+        sizePerPage: 10,
+        lastPageText: ">>",
+        firstPageText: "<<",
+        nextPageText: ">",
+        prevPageText: ">",
+        showTotal: true,
+        alwaysShowAllBtns: true,
+    });
+
+    const clearState=()=>{
+        
+        setData({
+            subcategory:'',
+            category:'',
+            city:'',
+            location:'',
+            illumination:''
+        });
+        setFormData({
+            code:'',
+            company:''
+        });
+  
+setStateData('noData')
+    }
     return (
         <>
             <div className="containers">
@@ -314,16 +388,23 @@ const Media = () => {
                                 <strong>Media Company Name</strong>
 
                             </div>
-                            <div className="newPermission " ref={otherRef} onClick={(e) => switchTab(e, 'other')}>
-                                <strong>Others</strong>
+                            <div className="newPermission " ref={subcategoryRef} onClick={(e) => switchTab(e, 'subcategory')}>
+                                <strong>subcategorys</strong>
 
                             </div>
+                          
+                            <div className={noStateData} style={{marginLeft:'auto',borderRadius:'30px'}} onClick={clearState}>
+                                <strong>Clear Data</strong>
+
+                                </div>
+                              
+                               
                         </div>
                         <div className="permissionRole" ref={mediaFormRef}>
                             <form className="form" onSubmit={submitHandler}>
                                 <div >
                                     <label for="search">Media Code :</label>
-                                    <input  type="text" id="search" name="mediaCode" placeholder="media code .." onChange={changeHandler} autoFocus ref={form1Ref} required />
+                                    <input  type="text" id="search" name="code" value={formData.code} placeholder="media code .." onChange={changeHandler} autoFocus ref={form1Ref} required />
                                 </div>
                                 <input type="submit" value={"Search"} ref={btn1Ref}/>
                             </form>
@@ -332,25 +413,25 @@ const Media = () => {
                             <form className="form" onSubmit={submitHandler}>
                                 <div>
                                     <label for="exampleFormControlInput1">Media Company :</label>
-                                    <input type="text" id="search" name="company" placeholder="mediaCompany" onChange={changeHandler} autoFocus ref={form2Ref} required/>
+                                    <input type="text" id="search" name="company" value={formData.company} placeholder="mediaCompany" onChange={changeHandler} autoFocus ref={form2Ref} required/>
                                 </div>
 
                                 <input type="submit" value={"Search"} ref={btn2Ref}/>
                             </form>
                         </div>
-                        <div className="permissionRole userProfileHidden" ref={otherFormRef}>
+                        <div className="permissionRole userProfileHidden" ref={subcategoryFormRef}>
                             <form className="form" onSubmit={submitHandler}>
-                                <div className='otherform'>
+                                <div className='subcategoryform'>
                                     <label>Media Category:</label>
                                     <Select
-                                    isDisabled={isSearch} options={MediaOption} name={'mediaCategory'} value={media} onChange={dataChange}  required/>
+                                    isDisabled={isSearch} options={MediaOption} name={'category'} value={media} onChange={dataChange}  required/>
                                 </div>
-                                <div className='otherform'>
+                                <div className='subcategoryform'>
                                     <label>Media Subcategory:</label>
                                     <Select
                                     isDisabled={isSearch}
-                                        value={other}
-                                        onChange={otherChangeHandler}
+                                        value={subcategory}
+                                        onChange={subcategoryChangeHandler}
                                         isMulti
                                         name="mediaSubcategories"
                                         options={Comp}
@@ -359,7 +440,7 @@ const Media = () => {
                                         
                                         />
                                 </div>
-                                <div className='otherform'>
+                                <div className='subcategoryform'>
                                     <label>City:</label>
                                     <Select
                                     isDisabled={isSearch}
@@ -370,7 +451,7 @@ const Media = () => {
                                        
                                     />
                                 </div>
-                                <div className='otherform'>
+                                <div className='subcategoryform'>
                                     <label>Location:</label>
                                     <Select
                                     isDisabled={isSearch} 
@@ -381,7 +462,7 @@ const Media = () => {
                                           
                                      />
                                 </div>
-                                <div className='otherform'>
+                                <div className='subcategoryform'>
                                     <label for='type'>Illimination Type:</label>
                                     <Select
                                     isDisabled={isSearch} 
@@ -400,45 +481,32 @@ const Media = () => {
                     </div>
 
                     <section className="media-result mt-4">
-                         <table className="table table-boarder table-hover table-striped m-3 table-sm">
-                    <thead className="thead-dark">
-                                <tr>
-                                    <th scope="col">S.NO</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">UserID</th>
-                                    <th scope="col">Contact NO</th>
-                                    <th scope="col">Switch</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                        {Users.length>0 &&
-                          Users.res.map((obj,i) => (
+                        {
+                            Users.length>0 ? <>
+                             <ToolkitProvider keyField="code" data={Users.res} columns={columns} exportCSV>
+                                {
+                                    props => (
+                                        <div>
+                                            <ExportCSVButton {...props.csvProps}>Export CSV</ExportCSVButton>
+                                        
 
-                                  
-                                  <tr key={i}>
-                                  <td> <input type="checkbox" className="form-check-input" mediacode={obj.code} mediacategory={obj.category_name} checked={obj?.isChecked || false}/></td>
-                                  <td><img src={obj.thumb}  style={{height: "100px",width: "100px"}}/></td>
-                                  <td>{obj.location}</td>
-                                  <td>{obj.city_name}</td>
-                                  <td>
-                                  {obj.phonenumber}{<br/>}
-                                  {obj.email}{<br/>}
-                                  {obj.location}
-                                  </td>
-                                  <td>{obj.category_name}</td>
-                                  <td>{obj.subcategory}</td>
-                                  <td>{obj.illumination}</td>
-                                  <td className="numeric">{obj.price_2}</td>
-                                  </tr>
-                                  
-                          ))
-    
+                                            <BootstrapTable   {...props.baseProps}
+                                                selectRow={selectRow}
+                                                pagination={pagintion}
+                                                noDataIndication="Table is Empty"
+                                            />
+                                           </div>
+                                    )
+                                }
+                            </ToolkitProvider>
+                            </> : 
+                            <>
+                            <hr />
+                                <h1>No Data ...</h1>
+                            </>
                         }
-                        </tbody>
-                        </table>
-                    </section>
+                           
+                      </section>
                 </div>
             </div>
         </>

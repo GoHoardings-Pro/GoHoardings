@@ -86,13 +86,16 @@ console.log(posts);
               <option value="40">40 / pages</option>
             </select>
             <div className="search-input">
-              <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+            <div class="search-box">
+              <input placeholder="Search..." onChange={event => setQuery(event.target.value)} />
+              <i className="fas fa-search icon"></i>
+            </div>
             </div>
 
           </div>
-          <center>
+          <div>
             {/* making User tabel */}
-            <table className="table table-boarder table-hover table-striped m-3 table-sm">
+            <table className="table table-boarder table-hover table-striped table-sm">
                     <thead className="thead-dark">
                 <tr>
                   {headers.map((row) => {
@@ -113,9 +116,9 @@ console.log(posts);
                     <td>{index + 1}</td>
                     <td>{posts.name}</td>
                     <td>{posts.code}</td>
-                    <td>{posts.contact_email}</td>
-                    <td>{posts.contact_phone}</td>
-                    <td>{posts.created}</td>
+                    <td>{posts.contact_email ? posts.contact_email : '**N/A**'}</td>
+                    <td>{posts.contact_phone ? posts.contact_phone : '**N/A**'}</td>
+                    <td>{posts.created.slice(0,10)}</td>
                     {/* <td>  posts.unsynced.unsynced : "NoData" }</td> */}
                     <td>{posts.synced}</td>
                     {/* <td>   posts.updated.updated : "NoData" }</td> */}
@@ -152,7 +155,7 @@ console.log(posts);
               </div>
 
             </div>
-          </center>
+          </div>
         </div>
      </div>
   )

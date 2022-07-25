@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import './Permission.css'
 import axios from "axios";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import Switch from "react-switch";
 import { Pagination, Result } from "antd";
 import SideBar from "../../Components/Navbar/Sidebar";
-
 Modal.setAppElement("#root");
 
 const StaffPermission = () => {
@@ -26,8 +26,8 @@ const StaffPermission = () => {
     const [page, setPage] = useState(1);
     const [postPerpage, setPostPerPage] = useState(10);
 
-  
-  
+
+
 
     const changehandler = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -87,7 +87,7 @@ const StaffPermission = () => {
             }
         });
     }
-    const updatePermission= async() =>{
+    const updatePermission = async () => {
         const { data } = await axios.post(`/api/v1/staff/updatePermission`, {
             permission: permission,
             role: user.role,
@@ -100,7 +100,7 @@ const StaffPermission = () => {
         }
     }
 
-    const changeFunc= async(e)=> {
+    const changeFunc = async (e) => {
         const { data } = await axios.post(`/api/v1/staff/rolePermission`, {
             role: e.target.value,
             id: user.id,
@@ -110,7 +110,7 @@ const StaffPermission = () => {
 
     const indexOfLastPage = page * postPerpage;
     const indexOfFirstPage = indexOfLastPage - postPerpage;
-    const currentPosts = posts.length>0 && posts.slice(indexOfFirstPage, indexOfLastPage);
+    const currentPosts = posts.length > 0 && posts.slice(indexOfFirstPage, indexOfLastPage);
 
     const onShowSizeChange = (current, pageSize) => {
         setPostPerPage(pageSize);
@@ -126,8 +126,8 @@ const StaffPermission = () => {
         return originalElement;
     };
 
-      // getting data from server
-      const getDATA = async () => {
+    // getting data from server
+    const getDATA = async () => {
         const { data } = await axios.get("/api/v1/staff/list");
         setPosts(data);
         setTotal(data.length);
@@ -141,7 +141,62 @@ const StaffPermission = () => {
         getDATA();
         getRoles();
     }, []);
+    const [userData, setUserData] = useState({})
 
+    const changeHandler = (e) => {
+        setUserData({ ...userData, [e.target.name]: e.target.value })
+    }
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        console.log(userData);
+        const { data } = await axios.post("/api/v1/staff/list", userData);
+        console.log(data);
+        if (data == true) {
+            setMess(data.message);
+        } else {
+            setMess(data.message);
+        }
+        setmodalisopen(false)
+    }
+    const mediaRef = useRef(null);
+    const mediaCompanyRef = useRef(null);
+    const subcategoryRef = useRef(null);
+
+    const mediaFormRef = useRef(null);
+    const mediaCompanyFormRef = useRef(null);
+    const subcategoryFormRef = useRef(null);
+
+    const switchTab = (e, tab) => {
+
+        if (tab === 'media') {
+            mediaFormRef.current.classList.remove('userProfileHidden')
+            mediaCompanyFormRef.current.classList.add('userProfileHidden')
+
+
+            mediaRef.current.classList.add('navActive')
+            mediaCompanyRef.current.classList.remove('navActive')
+            subcategoryRef.current.classList.remove('navActive')
+        }
+
+        if (tab === 'company') {
+            mediaFormRef.current.classList.add('userProfileHidden')
+            mediaCompanyFormRef.current.classList.remove('userProfileHidden')
+
+
+            mediaRef.current.classList.remove('navActive')
+            mediaCompanyRef.current.classList.add('navActive')
+            subcategoryRef.current.classList.remove('navActive')
+        }
+
+    }
+
+    const updateChangeHandler = () => {
+
+    }
+
+    const updateSubmitHandler = () => {
+
+    }
     return (
 
         <div className="containers">
@@ -152,53 +207,65 @@ const StaffPermission = () => {
                 <div className="page-title">
                     <h2>Staff Permission</h2>
                 </div>
-                <center className="m-1 p-1">
-                    <button className="m-1 p-1" onClick={() => setmodalisopen(true)}>
+
+                <div className="container-page-top">
+                    <select class="custom-select" onChange={(e) => setPostPerPage(e.target.value)}>
+                        <option selected value="10">10 / pages</option>
+                        <option value="20">20 / pages</option>
+                        <option value="30">30 / pages</option>
+                        <option value="40">40 / pages</option>
+                    </select>
+
+                    <button className="m-1 p-2" onClick={() => setmodalisopen(true)}>
                         Create Profile
                     </button>
-                    <input
-                        placeholder="Enter Post Title"
-                        onChange={(event) => setQuery(event.target.value)}
-                    />
-                    {/* <button className="btn m-1 p-1 float-left" onClick={permissions}>
-                        Create Role
-                    </button> */}
-                </center>
-                <Modal isOpen={modalisopen}>
-                    <div>
-                        <div className="row m-5 p-5">
-                            <div className="field m-2 p-2">
-                                <label>Email</label>
-                                <input type="text" onChange={(e) => setEmail(e.target.value)} />
-                            </div>
-                            <div className="field m-2 p-2">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
-                            <div className="field m-2 p-2">
-                                <label>Role</label>
-                                <select id="selectBox" onChange={(e) => setRole(e.target.value)}>
-                                    {roleList.length>0 && roleList.map((obj, i) => (
-                                        <option value={obj.role}>{obj.role}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="m-2 p-2">
-                                <button type="submit" className="Button" onClick={addStaff}>
-                                    Create User
-                                </button>
-                                <h3>{mess}</h3>
-                            </div>
+
+                    <div className="search-input">
+                        <div class="search-box">
+                            <input placeholder="Search..." onChange={event => setQuery(event.target.value)} />
+                            <i className="fas fa-search icon"></i>
                         </div>
+
+
                     </div>
-                    <button className="m-5" onClick={() => setmodalisopen(false)}>
-                        Close
+                </div>
+                <Modal isOpen={modalisopen} className={'form_modal'}>
+
+                    <button className="closeToggle" onClick={() => setmodalisopen(false)}>
+                        <i className="fa-solid fa-multiply"></i>
                     </button>
+                    <form className="right info" onSubmit={submitHandler}>
+                        <h5>Create New Profile</h5>
+                        <div className="inputs">
+
+                            <div className="infoInput">
+                                <label htmlFor="password">Name</label>
+                                <div className="input">
+                                    <i className="fa-solid fa-user"></i><input name='email' type="email" value={userData.email} onChange={changeHandler} placeholder="User Email" required />
+                                </div>
+                            </div>
+                            <div className="infoInput">
+                                <label htmlFor="password">Password</label>
+
+                                <div className="input">
+                                    <i className="fa-solid fa-lock"></i> <input type="password" name='password' value={userData.password} onChange={changeHandler} placeholder="password" required />
+                                </div>
+                            </div>
+                            <div className="infoInput">
+                                <label>Role:</label>
+                                <div className="select-input">
+                                    <select id="selectBox" name="role" onChange={changeHandler}>
+                                        {roleList.length > 0 && roleList.map((obj, i) => (
+                                            <option value={obj.role}>{obj.role}</option>
+                                        ))}
+                                    </select>
+                                </div></div>
+                            <input type="submit" value={'Create'} />
+                        </div>
+                    </form>
+
                 </Modal>
-                <table className="table table-boarder table-hover table-striped m-3 table-sm">
+                <table className="table table-boarder table-hover table-striped table-sm">
                     <thead className="thead-dark">
                         <tr>
                             <th>S.No</th>
@@ -211,7 +278,7 @@ const StaffPermission = () => {
                     </thead>
                     <tbody>
                         {/* map funtion on all data */}
-                        {currentPosts.length>0 && currentPosts
+                        {currentPosts.length > 0 && currentPosts
                             .filter((obj) => {
                                 if (query == "") {
                                     return obj;
@@ -236,6 +303,7 @@ const StaffPermission = () => {
                                             onClick={() => {
                                                 setedit(true);
                                                 setUser(obj);
+                                                changeFunc();
                                             }}
                                         >
                                             Edit
@@ -253,13 +321,89 @@ const StaffPermission = () => {
                 </table>
                 <div>
                     {/* Edit profile Model */}
-                    <Modal isOpen={edit}>
+
+                    <Modal isOpen={edit} className={'form_modal'}>
+                        <div className="permissionFilter" style={{ justifyContent: 'center' }}>
+                            <div className="existUser navActive" ref={mediaRef} onClick={(e) => switchTab(e, 'media')}>
+                                <strong>Information</strong>
+                            </div>
+                            <div className="newPermission " ref={mediaCompanyRef} onClick={(e) => switchTab(e, 'company')}>
+                                <strong>Permission</strong>
+
+                            </div>
+
+                        </div>
+                        <button className="closeToggle" onClick={() => setedit(false)}>
+                            <i className="fa-solid fa-multiply"></i>
+                        </button>
+                        <form className="right info infos permissionRole" style={{Top:'50%'}} onSubmit={updateSubmitHandler} ref={mediaFormRef} >
+                            <div className="inputs">
+                                <div className="infoInput">
+                                    <label htmlFor="password">Name</label>
+                                    <div className="input">
+                                        <i className="fa-solid fa-user"></i><input className="input"
+                                            type="text"
+                                            placeholder={email}
+                                            name="email"
+                                            value={user.email || ""}
+                                            onChange={(e) => changehandler(e)}
+                                            required />
+                                    </div>
+                                </div>
+                                <div className="infoInput">
+                                    <label htmlFor="password">Password</label>
+                                    <div className="input">
+                                        <i className="fa-solid fa-lock"></i>
+                                        <input
+                                            className="input"
+                                            type="password"
+                                            placeholder={password}
+                                            name="password"
+                                            value={user?.password && user.password.slice(0, 10) || ""}
+                                            onChange={(e) => changehandler(e)}
+                                            required />
+                                    </div>
+                                </div>
+                                <div className="infoInput">
+                                    <label htmlFor="password">ConfirmPassword</label>
+                                    <div className="input">
+                                        <i className="fa-solid fa-lock"></i>
+                                        <input
+                                            className="input"
+                                            type="password"
+                                            placeholder={password}
+                                            name="password"
+                                            value={user?.password && user.password.slice(0, 10) || ""}
+                                            onChange={(e) => changehandler(e)}
+                                            required />
+                                    </div>
+                                </div>
+                                <div className="infoInput">
+                                    <label>Role:</label>
+                                    <div className="select-input">
+                                        <select onChange={(e) => {
+                                            changehandler(e);
+                                            changeFunc(e);
+                                        }}
+                                            className="input"
+                                            name="role"
+                                        >
+                                            <option defaultValue={''}>Select Role</option>
+                                            {roleList.map((obj, i) => (
+                                                <option value={obj.role}>{obj.role}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="submit" value={'Create'} />
+                            </div>
+                        </form>
                         <div className="container">
-                            <div className="row">
-                                <div className="col-4">
+                            <div >
+                                <div >
                                     {/* by form we try to get old values nad update them */}
                                     <form onSubmit={(e) => updateuser(e, user.id)}>
-                                        <div className="field m-2 p-2">
+                                        {/* <div className="field m-2 p-2">
                                             <label>Email</label>
                                             <input
                                                 className="input"
@@ -302,13 +446,13 @@ const StaffPermission = () => {
                                         <div className="field m-2 p-2">
                                             <h3>{user.mess}</h3>
                                         </div>
-                                        <input type="submit"></input>
+                                        <input type="submit"></input> */}
                                     </form>
-                                    <button onClick={() => setedit(false)}>Close</button>
+
                                 </div>
-                                <div className="col-4">
+                                <div className="permissionRole userProfileHidden" ref={mediaCompanyFormRef}>
                                     <form onSubmit={(e) => updatePermission(e, permission.permission_id)}>
-                                        <table className="table table-bordered bg-info ">
+                                        <table className="table table-boarder table-hover table-striped table-sm ">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
