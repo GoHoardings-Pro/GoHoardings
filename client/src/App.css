@@ -37,7 +37,7 @@ input[type=submit]{
     padding: 10px 12px;
 }
 input[type=submit]:hover{
-    background: rgba(255, 99, 71, 0.925);
+   
     outline: none;
 }
 input#search {
@@ -50,6 +50,7 @@ input#search {
     box-shadow: 0 3px 6px 1px #042d4657;
     margin-top: 5px;
 }
+
 .table>thead{
  color: white;
   background: tomato;

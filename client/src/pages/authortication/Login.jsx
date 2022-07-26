@@ -49,29 +49,20 @@ const Login = () => {
 
 console.log(checked);
   return (
-    <><div className="nav-container">
-    <nav className='admin-header'>
-      <div className="nav-logo">
-        <img src="/assests/logo.png" alt="" />
-      </div>
-      <div className="nav-items">
-        <ul></ul>
-        <ul><li className='nav-item'><BsArrowsFullscreen /></li></ul>
-      </div>
-    </nav>
-  </div>
+    <>
+    <div className="loginContainer">
         <div className="box-form">
             <div className="left">
-                <img src="/assests/pic.jpg" alt="" />
+                <img src="/assests/Login_Page.png" alt="" />
             </div>
             <form className="right" onSubmit={submitHandler}>
                 <h5>Login</h5>
                 <div className="inputs">
                     <div className="input">
-                        <i className="fa-solid fa-user"></i><input name='email' type="email" value={user.email} onChange={changeHandler} placeholder="User Email"  required/>
+                        <input name='email' type="email" value={user.email} onChange={changeHandler} placeholder="User Email"  required/><i className="fa-solid fa-user"></i>
                     </div><br />
                     <div className="input">
-                        <i className="fa-solid fa-lock"></i> <input type="password" name='password' value={user.password} onChange={changeHandler} placeholder="password"  required/>
+                         <input type="password" name='password' value={user.password} onChange={changeHandler} placeholder="password"  required/><i className="fa-solid fa-lock"></i>
                     </div>
                 </div>
 
@@ -90,11 +81,12 @@ console.log(checked);
                     <input id='sumitIcon' type="Submit" value={'Login'}/>
                      <span>
                         <Link to="#"><i className="fa fa-google" aria-hidden="true"></i></Link>
-                        <Link to="#"><i className="fa fa-facebook" aria-hidden="true"></i></Link>
+                        {/* <Link to="#"><i className="fa fa-facebook" aria-hidden="true"></i></Link> */}
                     </span>
                 </div>
             </form>
 
+        </div>
         </div>
     </>
 )

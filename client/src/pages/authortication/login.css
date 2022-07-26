@@ -1,8 +1,19 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+.loginContainer{
+  /* background-color: #2558be7c; */
+  width: 100vw;
+  height: 100vh;
+  /* font-family: "Raleway", sans-serif; */
+  background-color: #f3f4f6;
+  font-family: 'Montserrat', sans-serif;
+}
   
   .box-form {
     width: 65%;
-    background: #FFFFFF;
+    height: 70%;
+   
+    background-color: white;
     border-radius: 10px;
     position: absolute;
     top: 50%;
@@ -11,19 +22,20 @@
     align-items: stretch;
     justify-content: space-between;
     box-shadow: 0 0 20px 6px #39096f34;
-    height: auto;
     display: grid;
     grid-template-columns: 2fr 2fr;
+    box-shadow: 0 3px 50px 0 rgba(0, 0, 0, 0.2), 0 1px 50px 0 rgba(0, 0, 0, 0.19);
   }
  
 
-@media (max-width: 980px) {
+@media (max-width: 880px) {
     .box-form {
-      top: 50%;
-    grid-template-columns: none;
+      top: 60%;
+      grid-template-columns: none;
       text-align: center;
       align-content: center;
       align-items: center;
+      height: auto;
     }
     .right{
         margin: auto;
@@ -34,10 +46,11 @@
     .box-form {
       width: 100vw;
         margin-top: 10px;
-    grid-template-columns: none;
+       grid-template-columns: none;
       text-align: center;
       align-content: center;
       align-items: center;
+      top: 50%;
     }
     #sumitIcon{
     padding: 10px 10px;
@@ -51,14 +64,16 @@
     };
   }
 .box-form .left{
-    width: 100%;
+  width: 100%;
+  margin: auto ;
   }
   .box-form .left img {
-    position: relative;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    padding: 50px;
+    /* display: block; */
+
+    width: 70%;
+    height:70%;
+    margin-left: 50px;
+    
   }
  
   .social_icon{
@@ -90,8 +105,8 @@
       }
    
     .social_icon span a {
-    background:rgb(219,74,57
-    );
+    background:rgb(219,74,57);
+    background: linear-gradient(RGB(136, 93, 162),RGB(84, 86, 160));
     color: #FFFFFF;
     padding: 10px 15px;
     border-radius: 10px;
@@ -99,12 +114,12 @@
     box-shadow: 0 3px 6px 1px #042d4657;
     margin-left: 10px;
   }
-  .social_icon span a:last-child {
+  /* .social_icon span a:last-child {
     background: #4285F4;
     margin-left: 10px;
-  }
+  } */
   .box-form .right {
-    padding: 40px 40px 0 40px;
+    /* padding: 40px 40px 0 40px; */
     overflow: hidden;
   } 
   @media (max-width: 980px) {
@@ -113,13 +128,17 @@
     }
   }
   .box-form .right{
-      padding: 50px 0px;
+      /* padding: 50px 0px; */
       width: 80%;
+      margin: auto 0;
     }
     .box-form .right h5 {
         font-size: 3vmax;
+        font-family: 'Montserrat', sans-serif;
         letter-spacing: -2px;
+       
         font-weight: 700;
+        margin-top: -10px;
     }
     .box-form .right .inputs{
         margin-top: 1rem;
@@ -133,19 +152,49 @@
   }
   .box-form .right .input>i{
     position: absolute;
-    padding: 10px 0;
+    padding: 10px 15px;
     font-size: 18px;
   }
   .box-form .right .inputs input {
     width: 100%;
-    padding: 10px 25px;
+    padding: 10px 40px;
     font-size: 16px;
     border: none;
     outline: none;
     border-bottom: 2px solid #B0B3B9;
     margin: 10px 0;
+
+    background-color:RGB(220, 234, 248);
+    border-radius: 15px;
+}
+.box-form .right .inputs input:focus {
+  border-bottom: 2px solid rgba(0, 26, 255, 0.5);
+ 
 }
 
+input:required:invalid  {
+  border-bottom-color: red;
+}
+input:invalid {
+  border-color: red;
+}
+input:required:valid {
+  background: url("./../../../public/assests/icons8-check-mark-48.png") no-repeat 95% 40% ;
+  background-size: 25px;
+ 
+  
+}
+input:required:invalid  {
+  background: url("./../../../public/assests/icons8-warning-48.png") no-repeat 95% 50% ;
+  background-size: 25px;
+
+
+}
+
+.social_icon>input[type='submit']{
+  font-weight: 700;
+  background: RGB(44, 60, 102);
+}
 .box-form .right .remember-me--forget-password {
     display: flex;
     justify-content: space-between;
